@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">NASApp</string>
+    <string name="feature_image">feature image</string>
+    <string name="info">Info</string>
+    <string name="start">Start</string>
+    <string name="rover_postcard_maker_feature">See pictures from Mars Rover and create your postcard using one of the pictures!</string>
+    <string name="eye_in_the_sky_feature">Chose location on the interactive map and see the most recent photo of the chosen location!</string>
+    <string name="asteroid_alert_feature">Find asteroids approaching the Earth soon and send your friends alert by SMS!</string>
+    <string name="ok">OK</string>
+    <string name="rover_name">Rover \"%s\"</string>
+    <string name="create_postcard">Create postcard</string>
+    <string name="selected_photo_sign">selected photo sign</string>
+    <string name="postcard_from_mars">Postcard from Mars</string>
+    <string name="eye_in_the_sky">Eye-In-the-Sky</string>
+    <string name="asteroid_alert">Asteroid alert</string>
+    <string name="post_card_image">post card image</string>
+    <string name="postcard_hint">Enter yout postcard text here</string>
+    <string name="send_postcard">Send postcard</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyDzeFzuDMM-LIe7ZUSYDsw9WF7b8gH7mQM
+    </string>
+     <string name="title_activity_maps">Map</string>
+    <string name="latitude">latitude</string>
+    <string name="longitude">longitude</string>
+    <string name="get_photo_from_satellite">GET PHOTO FROM SATELLITE</string>
+</resources>

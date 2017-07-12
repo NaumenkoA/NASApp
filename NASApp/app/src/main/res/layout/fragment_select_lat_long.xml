@@ -1,0 +1,36 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.example.alex.nasapp.ui.eye_in_the_sky.SelectLatLongFragment">
+
+    <fragment android:id="@+id/map"
+              android:name="com.google.android.gms.maps.SupportMapFragment"
+              android:layout_width="match_parent"
+              android:layout_height="0dp"
+              android:layout_weight="1"
+              tools:context="com.example.alex.nasapp.ui.NasaActivity"/>
+
+    <EditText
+        android:layout_marginTop="5dp"
+        android:id="@+id/latEditText"
+        android:hint="@string/latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:layout_marginTop="5dp"
+        android:id="@+id/longEditText"
+        android:hint="@string/longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:layout_marginTop="5dp"
+        android:id="@+id/showImageButton"
+        android:text="@string/get_photo_from_satellite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
