@@ -1,28 +1,61 @@
 package com.example.alex.nasapp.ui.eye_in_the_sky;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 
 import com.example.alex.nasapp.R;
+import com.example.alex.nasapp.ui.rover.RoverImageryFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
-public class SelectLatLongFragment extends Fragment implements OnMapReadyCallback{
+import io.reactivex.Observable;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.observers.DisposableObserver;
+
+
+public class SelectLatLongFragment extends Fragment implements OnMapReadyCallback {
+
+    public interface OnLatLongSelectedListener {
+    void showSatellitePhoto(LatLng latLng);
+}
+
+    OnLatLongSelectedListener listener;
 
     LatLng selectedLatLng;
     EditText latEditText;
     EditText longEditText;
+    Button showImageButton;
+
+    private DisposableObserver <Boolean> disposable;
+    Observable<CharSequence> observableLatEditText;
+    Observable<CharSequence> observableLongEditText;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Observable.combineLatest(
+                observableLatEditText, observableLongEditText, new BiFunction<CharSequence, CharSequence, Boolean>() {
+                    @Override
+                    public Boolean apply(CharSequence charSequence, CharSequence charSequence2) {
+                        return  (charSequence.length() > 0
+                                && charSequence2.length() > 0);
+
+                    }
+                }).subscribe (disposable);
+    }
 
     @Nullable
     @Override
@@ -32,10 +65,57 @@ public class SelectLatLongFragment extends Fragment implements OnMapReadyCallbac
 
         latEditText = (EditText) rootView.findViewById(R.id.latEditText);
         longEditText = (EditText) rootView.findViewById(R.id.longEditText);
+        showImageButton = (Button) rootView.findViewById(R.id.showImageButton);
+
+        observableLatEditText = RxTextView.textChanges(latEditText);
+        observableLongEditText = RxTextView.textChanges(longEditText);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        showImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double latitude = Double.parseDouble(latEditText.getText().toString());
+                double longitude = Double.parseDouble(longEditText.getText().toString());
+
+                listener.showSatellitePhoto(new LatLng(latitude, longitude));
+            }
+        });
+
+        disposable = new DisposableObserver<Boolean>() {
+            @Override
+            public void onNext(Boolean value) {
+                showImageButton.setEnabled(value);
+            }
+            @Override
+            public void onError(Throwable e) {
+
+            }
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
         return rootView;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (OnLatLongSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnLatLongSelectedListener");
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        disposable.dispose();
     }
 
     @Override

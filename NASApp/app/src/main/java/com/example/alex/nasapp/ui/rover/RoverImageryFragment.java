@@ -34,9 +34,9 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
     ProgressBar progressBar;
     Button createPostcardButton;
     Photo selectedPhoto;
-    CreatePostcardListener listener;
+    OnCreatePostcardListener listener;
 
-    public interface CreatePostcardListener  {
+    public interface OnCreatePostcardListener {
         void createPostcard(Photo photo);
     }
 
@@ -70,10 +70,10 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (CreatePostcardListener) context;
+            listener = (OnCreatePostcardListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement CreatePostcardListener");
+                    + " must implement OnCreatePostcardListener");
         }
     }
 

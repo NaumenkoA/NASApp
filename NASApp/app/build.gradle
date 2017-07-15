@@ -36,4 +36,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:11.0.2'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
 }

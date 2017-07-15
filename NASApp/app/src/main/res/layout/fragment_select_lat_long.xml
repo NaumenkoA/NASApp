@@ -29,6 +29,7 @@
     <Button
         android:layout_marginTop="5dp"
         android:id="@+id/showImageButton"
+        android:enabled="false"
         android:text="@string/get_photo_from_satellite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

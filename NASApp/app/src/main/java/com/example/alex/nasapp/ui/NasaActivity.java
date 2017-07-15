@@ -11,8 +11,11 @@ import com.example.alex.nasapp.model.rover.Photo;
 import com.example.alex.nasapp.ui.eye_in_the_sky.SelectLatLongFragment;
 import com.example.alex.nasapp.ui.rover.CreatePostcardFragment;
 import com.example.alex.nasapp.ui.rover.RoverImageryFragment;
+import com.google.android.gms.maps.model.LatLng;
 
-public class NasaActivity extends AppCompatActivity implements RoverImageryFragment.CreatePostcardListener {
+public class NasaActivity extends AppCompatActivity
+        implements RoverImageryFragment.OnCreatePostcardListener,
+                    SelectLatLongFragment.OnLatLongSelectedListener {
 
     FragmentManager fragmentManager;
     public static final String SELECTED_FEATURE_ID = "selected_feature_id";
@@ -55,5 +58,10 @@ public class NasaActivity extends AppCompatActivity implements RoverImageryFragm
         CreatePostcardFragment createPostcardFragment = CreatePostcardFragment.newInstance(photo.getImgSrc());
         fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, createPostcardFragment)
                 .commit();
+    }
+
+    @Override
+    public void showSatellitePhoto(LatLng latLng) {
+
     }
 }
