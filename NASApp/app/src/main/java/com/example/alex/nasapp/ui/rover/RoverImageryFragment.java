@@ -40,6 +40,10 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
         void createPostcard(Photo photo);
     }
 
+    public RoverImageryFragment () {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -97,9 +101,9 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
         if (response.code() == HttpURLConnection.HTTP_OK) {
             roverPhotos = response.body();
             if (roverPhotos != null) {
-                ((MarsImageryAdapter) roverRecyclerView.getAdapter()).upload(roverPhotos.getPhotos());;
+                ((MarsImageryAdapter) roverRecyclerView.getAdapter()).upload(roverPhotos.getPhotos());
+                showLoading(false);
             }
-            showLoading(false);
         } else {
             onFailureResponse();
         }

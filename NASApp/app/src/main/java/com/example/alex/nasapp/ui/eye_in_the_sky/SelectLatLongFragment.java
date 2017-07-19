@@ -31,6 +31,10 @@ public class SelectLatLongFragment extends Fragment implements OnMapReadyCallbac
     void showSatellitePhoto(LatLng latLng);
 }
 
+public SelectLatLongFragment () {
+
+}
+
     OnLatLongSelectedListener listener;
 
     LatLng selectedLatLng;

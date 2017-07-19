@@ -34,7 +34,6 @@ public class Photo {
     }
 
     public String getImgSrc() {
-
         return imgSrc;
     }
 }

@@ -1,6 +1,11 @@
 package com.example.alex.nasapp.api;
 
+import com.example.alex.nasapp.model.asteroid.AsteroidList;
+import com.example.alex.nasapp.model.eye_in_the_sky.SatellitePhoto;
 import com.example.alex.nasapp.model.rover.RoverPhotos;
+
+import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -12,5 +17,13 @@ public interface Nasa {
 
     @GET("mars-photos/api/v1/rovers/curiosity/photos?api_key=" + API_KEY)
     Call<RoverPhotos> getMarsRoverImages (@Query("sol") int sol, @Query("page") int pageNumber);
+
+    @GET("planetary/earth/imagery?api_key=" + API_KEY)
+    Call<SatellitePhoto> getSatellitePhoto (@Query("lat") float lat,
+                                            @Query("lon") float lon,
+                                            @Query("date") String date);
+
+    @GET("neo/rest/v1/feed?end_date=2017-07-20&api_key=" + API_KEY)
+    Call<AsteroidList> getAsteroidList (@Query("start_date")String startDate);
 
         }

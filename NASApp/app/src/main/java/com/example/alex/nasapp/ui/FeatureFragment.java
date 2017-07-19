@@ -21,6 +21,10 @@ public class FeatureFragment extends Fragment {
 
         MenuFeature menuFeature;
 
+    public FeatureFragment () {
+
+    }
+
         public static FeatureFragment newInstance (MenuFeature menuFeature) {
             FeatureFragment featureFragment = new FeatureFragment();
             Bundle args = new Bundle();

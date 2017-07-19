@@ -16,11 +16,25 @@
     <string name="post_card_image">post card image</string>
     <string name="postcard_hint">Enter yout postcard text here</string>
     <string name="send_postcard">Send postcard</string>
+    <string name="photo_date">Date: %s</string>
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
         AIzaSyDzeFzuDMM-LIe7ZUSYDsw9WF7b8gH7mQM
     </string>
-     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">Map</string>
     <string name="latitude">latitude</string>
     <string name="longitude">longitude</string>
     <string name="get_photo_from_satellite">GET PHOTO FROM SATELLITE</string>
+    <string name="satellite_photo_on_selected_latitude_and_longitude">Satellite photo on selected latitude and longitude</string>
+    <string name="asteroids_period_info">Asteroids approaching Earth in the next 7 days</string>
+    <string name="send_alert">SEND ALERT</string>
+    <string name="name">Name:</string>
+    <string name="estimated_diameter">Estimated diameter:</string>
+    <string name="velocity">Velocity:</string>
+    <string name="approach_date">Approach date:</string>
+    <string name="miss_distance">Miss distance:</string>
+    <string name="potentially_hazardous">POTENTIALLY  HAZARDOUS!</string>
+    <string name="not_hazardous">NOT  HAZARDOUS</string>
+    <string name="asteroid_velocity">%s km/s</string>
+    <string name="asteroid_diameter">%1$s - %2$s meters</string>
+    <string name="asteroid_miss_distance">%s distances to the Moon</string>
 </resources>

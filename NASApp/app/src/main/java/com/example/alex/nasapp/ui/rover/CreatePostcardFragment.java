@@ -29,6 +29,10 @@ import java.io.File;
 public class CreatePostcardFragment extends Fragment {
     private static final String SELECTED_PHOTO_SRC = "selected_photo";
 
+    public CreatePostcardFragment () {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

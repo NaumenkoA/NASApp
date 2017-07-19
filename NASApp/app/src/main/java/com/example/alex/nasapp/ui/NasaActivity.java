@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.model.rover.Photo;
+import com.example.alex.nasapp.ui.asteroid.AsteroidListFragment;
+import com.example.alex.nasapp.ui.eye_in_the_sky.SatellitePhotoFragment;
 import com.example.alex.nasapp.ui.eye_in_the_sky.SelectLatLongFragment;
 import com.example.alex.nasapp.ui.rover.CreatePostcardFragment;
 import com.example.alex.nasapp.ui.rover.RoverImageryFragment;
@@ -39,7 +41,7 @@ public class NasaActivity extends AppCompatActivity
                 break;
 
             case 12:
-                //fragment = new AsteroidListFragment();
+                fragment = new AsteroidListFragment();
                 break;
 
             default:
@@ -62,6 +64,9 @@ public class NasaActivity extends AppCompatActivity
 
     @Override
     public void showSatellitePhoto(LatLng latLng) {
-
+        Fragment fragment = SatellitePhotoFragment.newInstance(latLng);
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentPlaceholder, fragment)
+                .commit();
     }
 }
