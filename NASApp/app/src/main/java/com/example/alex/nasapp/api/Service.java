@@ -1,5 +1,7 @@
 package com.example.alex.nasapp.api;
 
+import com.example.alex.nasapp.helpers.AsteroidDeserializer;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -13,4 +15,5 @@ public class Service {
                 .build()
                 .create(Nasa.class);
     }
+
 }

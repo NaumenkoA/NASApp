@@ -5,28 +5,26 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.adapters.AsteroidAdapter;
-import com.example.alex.nasapp.adapters.MarsImageryAdapter;
 import com.example.alex.nasapp.api.Service;
+import com.example.alex.nasapp.helpers.AsteroidDeserializer;
 import com.example.alex.nasapp.model.asteroid.AsteroidList;
-import com.example.alex.nasapp.model.asteroid.NearEarthObjects;
-import com.example.alex.nasapp.model.rover.RoverPhotos;
-
+import com.google.android.gms.common.api.Result;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -65,27 +63,30 @@ public class AsteroidListFragment extends Fragment {
 
         Locale locale = Locale.getDefault();
         String startDate = new SimpleDateFormat("yyyy-MM-dd", locale).format(new Date());
-        Service.getNasaApi().getAsteroidList("2017-07-20")
-                .enqueue(new Callback<AsteroidList>() {
+        Service.getNasaApi().getAsteroidList(startDate)
+                .enqueue(new Callback<JsonElement>() {
                     @Override
-                    public void onResponse(Call<AsteroidList> call, Response<AsteroidList> response) {
+                    public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
                         onSuccessResponse (response);
                     }
 
                     @Override
-                    public void onFailure(Call<AsteroidList> call, Throwable t) {
+                    public void onFailure(Call<JsonElement> call, Throwable t) {
                         onFailureResponse ();
                     }
                 });
     }
 
-    private void onSuccessResponse(Response<AsteroidList> response) {
+    private void onSuccessResponse(Response<JsonElement> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    asteroidList = response.body();
+                    GsonBuilder gsonBuilder = new GsonBuilder();
+                    gsonBuilder.registerTypeAdapter(AsteroidList.class, new AsteroidDeserializer());
+                    Gson gson = gsonBuilder.create();
+                    asteroidList = gson.fromJson(response.body().toString(), AsteroidList.class);
+
                     if (asteroidList != null) {
-                ((AsteroidAdapter) asteroidRecyclerView.getAdapter())
-                        .upload(asteroidList.getNearEarthObjects().getAsteroid());
-                showLoading(false);
+                        ((AsteroidAdapter)  asteroidRecyclerView.getAdapter()).upload(asteroidList.getAsteroidList());
+                        showLoading(false);
             }
         } else {
             onFailureResponse();

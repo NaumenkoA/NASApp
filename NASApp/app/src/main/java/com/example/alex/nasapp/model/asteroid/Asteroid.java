@@ -9,7 +9,7 @@ public class Asteroid {
 
     @SerializedName("links")
     @Expose
-    private Links_ links;
+    private Links links;
     @SerializedName("neo_reference_id")
     @Expose
     private String neoReferenceId;
@@ -32,7 +32,7 @@ public class Asteroid {
     @Expose
     private List<CloseApproachData> closeApproachData = null;
 
-    public Links_ getLinks() {
+    public Links getLinks() {
         return links;
     }
 

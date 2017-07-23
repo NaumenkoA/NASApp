@@ -4,27 +4,17 @@ package com.example.alex.nasapp.model.asteroid;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class AsteroidList {
 
-    @SerializedName("links")
-    @Expose
-    private Links links;
-    @SerializedName("element_count")
-    @Expose
-    private Integer elementCount;
-    @SerializedName("near_earth_objects")
-    @Expose
-    private NearEarthObjects nearEarthObjects;
-
-    public Links getLinks() {
-        return links;
+    public AsteroidList (List <Asteroid> asteroids) {
+        this.asteroidList = asteroids;
     }
 
-    public Integer getElementCount() {
-        return elementCount;
+    public List<Asteroid> getAsteroidList() {
+        return asteroidList;
     }
 
-    public NearEarthObjects getNearEarthObjects() {
-        return nearEarthObjects;
-    }
+     private List<Asteroid> asteroidList;
 }
