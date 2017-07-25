@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
@@ -36,7 +37,7 @@ public class AsteroidListFragment extends Fragment {
 
     }
 
-    LinearLayout linearLayout;
+    RelativeLayout relativeLayout;
     ProgressBar progressBar;
     RecyclerView asteroidRecyclerView;
     AsteroidList asteroidList = null;
@@ -46,7 +47,7 @@ public class AsteroidListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_asteroid_list, container, false);
 
-        linearLayout = (LinearLayout) rootView.findViewById(R.id.linearLayout);
+        relativeLayout = (RelativeLayout) rootView.findViewById(R.id.relativeLayout);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         asteroidRecyclerView = (RecyclerView) rootView.findViewById(R.id.asteroidRecyclerView);
 
@@ -100,10 +101,10 @@ public class AsteroidListFragment extends Fragment {
 
     private void showLoading(boolean isLoading) {
         if (isLoading) {
-            linearLayout.setVisibility(View.INVISIBLE);
+            relativeLayout.setVisibility(View.INVISIBLE);
             progressBar.setVisibility(View.VISIBLE);
         } else {
-            linearLayout.setVisibility(View.VISIBLE);
+            relativeLayout.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.INVISIBLE);
         }
     }

@@ -2,6 +2,7 @@ package com.example.alex.nasapp.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +64,7 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
 
         public ViewHolder(View itemView) {
             super(itemView);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.layout);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
             nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
             diameterTextView = (TextView) itemView.findViewById(R.id.diameterTextView);
             velocityTextView = (TextView) itemView.findViewById(R.id.velocityTextView);

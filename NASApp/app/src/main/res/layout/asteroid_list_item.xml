@@ -1,12 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:id="@+id/layout"
-              android:layout_width="match_parent"
-              android:layout_height="200dp">
 
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    card_view:cardCornerRadius="4dp"
+    card_view:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_width = "match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_marginTop="7dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -15,17 +27,20 @@
             android:text="@string/name"
             android:layout_width="0dp"
             android:layout_weight="2"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="0dp"
             android:layout_weight="3"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="7dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -34,17 +49,20 @@
             android:text="@string/estimated_diameter"
             android:layout_width="0dp"
             android:layout_weight="2"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/diameterTextView"
             android:layout_width="0dp"
             android:layout_weight="3"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="7dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -53,17 +71,20 @@
             android:text="@string/velocity"
             android:layout_width="0dp"
             android:layout_weight="2"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/velocityTextView"
             android:layout_width="0dp"
             android:layout_weight="3"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="7dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -72,17 +93,20 @@
             android:text="@string/approach_date"
             android:layout_width="0dp"
             android:layout_weight="2"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/approachDateTextView"
             android:layout_width="0dp"
             android:layout_weight="3"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="7dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -91,22 +115,27 @@
             android:text="@string/miss_distance"
             android:layout_width="0dp"
             android:layout_weight="2"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
         <TextView
             android:id="@+id/missDistanceTextView"
             android:layout_width="0dp"
             android:layout_weight="3"
+            android:textSize="16sp"
             android:layout_height="wrap_content"/>
 
     </LinearLayout>
 
 <TextView
-    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="10dp"
+    android:gravity="center_horizontal"
     android:textStyle="bold"
     android:textSize="24sp"
     android:id="@+id/isHazardousTextView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
