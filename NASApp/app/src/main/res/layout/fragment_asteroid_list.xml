@@ -19,6 +19,7 @@
     <Spinner
         android:id="@+id/spinner"
         android:layout_alignParentTop="true"
+        android:paddingBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     </Spinner>

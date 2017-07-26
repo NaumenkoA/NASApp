@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+              android:orientation="vertical"
+             tools:context="com.example.alex.nasapp.ui.asteroid.SMSAlertFragment">
+
+    <LinearLayout
+        android:id="@+id/phoneLayout"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/phoneEditText"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:inputType="phone"/>
+
+        <ImageButton
+            android:id="@+id/pickContactsButton"
+            android:src="@drawable/ic_contacts_white_48dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/smsEditText"
+        android:layout_below="@id/phoneLayout"
+        android:layout_width="match_parent"
+        android:background="#f4c4c4"
+        android:layout_height="300dp"
+        android:inputType="none"/>
+
+    <Button
+        android:id="@+id/sendSMSButton"
+        android:layout_alignParentBottom="true"
+        android:text="@string/send_sms_alert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>

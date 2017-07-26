@@ -4,16 +4,31 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
+    android:layout_height="230dp"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4dp"
     app:cardUseCompatPadding="true">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="4dp"
+        android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/selecteAsteroidImageView"
+        android:src="@drawable/ic_new_releases_white_48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
     <LinearLayout
-        android:id="@+id/linearLayout"
         android:orientation="vertical"
-        android:layout_gravity="center"
         android:layout_width = "match_parent"
         android:layout_height="match_parent">
 
@@ -46,7 +61,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:text="@string/estimated_diameter"
+            android:text="@string/diameter"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:textSize="16sp"
@@ -137,5 +152,7 @@
     android:layout_height="wrap_content"/>
 
     </LinearLayout>
+
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>

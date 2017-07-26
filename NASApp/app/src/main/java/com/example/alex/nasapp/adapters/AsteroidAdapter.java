@@ -7,23 +7,31 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.model.asteroid.Asteroid;
+import com.example.alex.nasapp.model.rover.Photo;
 
 import java.util.List;
 
 public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewHolder> {
 
     private List<Asteroid> asteroids;
-
     Context context;
+    private int selectedItemPosition;
+    private boolean itemWasSelected = false;
+    private AsteroidSelectedListener listener;
 
-    public AsteroidAdapter (Context context, List <Asteroid> asteroids) {
+    public AsteroidAdapter (Context context, List <Asteroid> asteroids, AsteroidSelectedListener listener) {
         this.asteroids = asteroids;
         this.context = context;
+        this.listener = listener;
+    }
+
+    public interface AsteroidSelectedListener {
+        void onAsteroidSelected (Asteroid asteroid);
     }
 
     @Override
@@ -36,6 +44,13 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(asteroids.get(position));
+
+        if (itemWasSelected && selectedItemPosition == position) {
+            holder.selectedImageView.setVisibility(View.VISIBLE);
+        } else
+        {
+            holder.selectedImageView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -52,25 +67,28 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        LinearLayout linearLayout;
+        CardView cardView;
         TextView nameTextView;
         TextView diameterTextView;
         TextView velocityTextView;
         TextView approachDateTextView;
         TextView missDistanceTextView;
         TextView isHazardousTextView;
+        ImageView selectedImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
+            selectedImageView = (ImageView) itemView.findViewById(R.id.selecteAsteroidImageView);
             nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
             diameterTextView = (TextView) itemView.findViewById(R.id.diameterTextView);
             velocityTextView = (TextView) itemView.findViewById(R.id.velocityTextView);
             approachDateTextView = (TextView) itemView.findViewById(R.id.approachDateTextView);
             missDistanceTextView = (TextView) itemView.findViewById(R.id.missDistanceTextView);
             isHazardousTextView = (TextView) itemView.findViewById(R.id.isHazardousTextView);
+            itemView.setOnClickListener(this);
         }
 
         void bind (Asteroid asteroid) {
@@ -93,10 +111,10 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
                    changeNumberOfCharsAfterDot(asteroidVelocity, 1)));
             approachDateTextView.setText(asteroid.getCloseApproachData().get(0).getCloseApproachDate());
             if (asteroid.getPotentiallyHazardousAsteroid()) {
-                linearLayout.setBackgroundColor(Color.parseColor("#f67d7d"));
+                cardView.setCardBackgroundColor(Color.parseColor("#f4c4c4"));
                 isHazardousTextView.setText(R.string.potentially_hazardous);
             } else {
-                linearLayout.setBackgroundColor(Color.parseColor("#87f67d"));
+                cardView.setCardBackgroundColor(Color.parseColor("#c4f4c7"));
                 isHazardousTextView.setText(R.string.not_hazardous);
             }
         }
@@ -107,6 +125,16 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
             } else {
                 return string.substring(0, string.indexOf(".") + charsAfterDot + 1);
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+            selectedItemPosition = this.getAdapterPosition();
+            if (!itemWasSelected) {
+                itemWasSelected = true;
+            }
+            notifyDataSetChanged();
+            listener.onAsteroidSelected(asteroids.get(selectedItemPosition));
         }
     }
 }

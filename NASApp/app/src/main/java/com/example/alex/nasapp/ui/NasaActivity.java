@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
+import com.example.alex.nasapp.model.asteroid.Asteroid;
 import com.example.alex.nasapp.model.rover.Photo;
 import com.example.alex.nasapp.ui.asteroid.AsteroidListFragment;
+import com.example.alex.nasapp.ui.asteroid.SMSAlertFragment;
 import com.example.alex.nasapp.ui.eye_in_the_sky.SatellitePhotoFragment;
 import com.example.alex.nasapp.ui.eye_in_the_sky.SelectLatLongFragment;
 import com.example.alex.nasapp.ui.rover.CreatePostcardFragment;
@@ -17,7 +19,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class NasaActivity extends AppCompatActivity
         implements RoverImageryFragment.OnCreatePostcardListener,
-                    SelectLatLongFragment.OnLatLongSelectedListener {
+                    SelectLatLongFragment.OnLatLongSelectedListener,
+                    AsteroidListFragment.OnSendSMSAlertListener
+                    {
 
     FragmentManager fragmentManager;
     public static final String SELECTED_FEATURE_ID = "selected_feature_id";
@@ -65,6 +69,14 @@ public class NasaActivity extends AppCompatActivity
     @Override
     public void showSatellitePhoto(LatLng latLng) {
         Fragment fragment = SatellitePhotoFragment.newInstance(latLng);
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragmentPlaceholder, fragment)
+                .commit();
+    }
+
+    @Override
+    public void sendSMSAlert(Asteroid asteroid) {
+        Fragment fragment = SMSAlertFragment.newInstance(asteroid);
         fragmentManager.beginTransaction()
                 .replace(R.id.fragmentPlaceholder, fragment)
                 .commit();
