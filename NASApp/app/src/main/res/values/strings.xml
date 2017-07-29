@@ -43,8 +43,9 @@
         <item>Show hazardous</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="send_sms_alert">Send SMS alert</string>
+    <string name="sms_text">Asteroid %1$sm in diameter is rushing to the Earth at speed %2$s km/s. NASA tell it would miss, but what if they\'re wrong?</string>
+    <string name="enter_phone_here">Enter phone here</string>
+    <string name="sms_text_hint">SMS text:</string>
 
 </resources>

@@ -11,8 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.alex.nasapp.R;
+import com.example.alex.nasapp.helpers.StringHelper;
 import com.example.alex.nasapp.model.asteroid.Asteroid;
-import com.example.alex.nasapp.model.rover.Photo;
 
 import java.util.List;
 
@@ -103,12 +103,12 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
                     .getMissDistance().getLunar();
 
             missDistanceTextView.setText(context.getResources().getString(R.string.asteroid_miss_distance,
-                    changeNumberOfCharsAfterDot(asteroidMissDistance, 1)));
+                    StringHelper.changeNumberOfCharsAfterDot(asteroidMissDistance, 1)));
             diameterTextView.setText(context.getResources().getString(R.string.asteroid_diameter,
-                    changeNumberOfCharsAfterDot(estimatedDiameterMin, 0),
-                    changeNumberOfCharsAfterDot(estimatedDiameterMax, 0)));
+                    StringHelper.changeNumberOfCharsAfterDot(estimatedDiameterMin, 0),
+                    StringHelper.changeNumberOfCharsAfterDot(estimatedDiameterMax, 0)));
             velocityTextView.setText(context.getResources().getString(R.string.asteroid_velocity,
-                   changeNumberOfCharsAfterDot(asteroidVelocity, 1)));
+                   StringHelper.changeNumberOfCharsAfterDot(asteroidVelocity, 1)));
             approachDateTextView.setText(asteroid.getCloseApproachData().get(0).getCloseApproachDate());
             if (asteroid.getPotentiallyHazardousAsteroid()) {
                 cardView.setCardBackgroundColor(Color.parseColor("#f4c4c4"));
@@ -116,14 +116,6 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
             } else {
                 cardView.setCardBackgroundColor(Color.parseColor("#c4f4c7"));
                 isHazardousTextView.setText(R.string.not_hazardous);
-            }
-        }
-
-        private String changeNumberOfCharsAfterDot(String string, int charsAfterDot) {
-            if (charsAfterDot == 0) {
-                return string.substring(0, string.indexOf(".") - 1);
-            } else {
-                return string.substring(0, string.indexOf(".") + charsAfterDot + 1);
             }
         }
 

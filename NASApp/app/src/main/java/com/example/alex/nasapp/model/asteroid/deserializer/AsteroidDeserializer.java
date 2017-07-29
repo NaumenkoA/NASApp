@@ -1,4 +1,4 @@
-package com.example.alex.nasapp.helpers;
+package com.example.alex.nasapp.model.asteroid.deserializer;
 
 import com.example.alex.nasapp.model.asteroid.Asteroid;
 import com.example.alex.nasapp.model.asteroid.AsteroidList;

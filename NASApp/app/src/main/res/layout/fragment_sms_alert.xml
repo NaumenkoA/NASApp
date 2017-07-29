@@ -15,6 +15,7 @@
 
         <EditText
             android:id="@+id/phoneEditText"
+            android:hint="@string/enter_phone_here"
             android:layout_width="0dp"
             android:layout_weight="4"
             android:layout_height="match_parent"
@@ -29,10 +30,19 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/smsHintTextView"
+        android:layout_below="@id/phoneLayout"
+        android:text="@string/sms_text_hint"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
     <EditText
         android:id="@+id/smsEditText"
-        android:layout_below="@id/phoneLayout"
+        android:layout_below="@id/smsHintTextView"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:background="#f4c4c4"
         android:layout_height="300dp"
