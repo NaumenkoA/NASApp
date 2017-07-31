@@ -1,6 +1,9 @@
 package com.example.alex.nasapp.ui.asteroid;
 
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -176,6 +179,10 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
         selectedAsteroid = asteroid;
         if (sendAlertButton.getVisibility() == View.INVISIBLE) {
             sendAlertButton.setVisibility(View.VISIBLE);
+            Animator animator = AnimatorInflater.loadAnimator(getActivity(),
+                    R.animator.button_animator);
+            animator.setTarget(sendAlertButton);
+            animator.start();
         }
     }
 }

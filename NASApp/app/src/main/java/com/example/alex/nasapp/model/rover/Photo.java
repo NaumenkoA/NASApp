@@ -6,6 +6,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Photo {
 
+
+    public int getId() {
+        return id;
+    }
+
     @SerializedName("id")
     @Expose
     private Integer id;

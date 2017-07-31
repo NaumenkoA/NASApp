@@ -1,5 +1,7 @@
 package com.example.alex.nasapp.ui.rover;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -129,6 +132,10 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
         selectedPhoto = photo;
         if (createPostcardButton.getVisibility() == View.INVISIBLE) {
             createPostcardButton.setVisibility(View.VISIBLE);
+            Animator animator = AnimatorInflater.loadAnimator(getActivity(),
+                    R.animator.button_animator);
+            animator.setTarget(createPostcardButton);
+            animator.start();
         }
     }
 }

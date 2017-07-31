@@ -1,5 +1,6 @@
 package com.example.alex.nasapp.ui;
 
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
+import com.example.alex.nasapp.adapters.MarsImageryAdapter;
 import com.example.alex.nasapp.model.asteroid.Asteroid;
 import com.example.alex.nasapp.model.rover.Photo;
 import com.example.alex.nasapp.ui.asteroid.AsteroidListFragment;
@@ -24,7 +26,9 @@ public class NasaActivity extends AppCompatActivity
                     {
 
     FragmentManager fragmentManager;
+    Fragment fragment = null;
     public static final String SELECTED_FEATURE_ID = "selected_feature_id";
+    public static final String TAG_ROVER_IMAGERY_FRAGMENT = "rover_imagery_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,7 @@ public class NasaActivity extends AppCompatActivity
         setContentView(R.layout.activity_nasa);
 
         fragmentManager = getSupportFragmentManager();
-        Fragment fragment = null;
+
         int selectedFeatureId = getIntent().getIntExtra(SELECTED_FEATURE_ID, 0);
 
         switch (selectedFeatureId) {
@@ -61,9 +65,13 @@ public class NasaActivity extends AppCompatActivity
 
     @Override
     public void createPostcard(Photo photo) {
-        CreatePostcardFragment createPostcardFragment = CreatePostcardFragment.newInstance(photo.getImgSrc());
-        fragmentManager.beginTransaction().replace(R.id.fragmentPlaceholder, createPostcardFragment)
-                .commit();
+
+            CreatePostcardFragment createPostcardFragment = CreatePostcardFragment.newInstance(photo.getImgSrc());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack(TAG_ROVER_IMAGERY_FRAGMENT)
+                    .replace(R.id.fragmentPlaceholder, createPostcardFragment)
+                    .commit();
     }
 
     @Override

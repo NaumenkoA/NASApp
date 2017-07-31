@@ -5,12 +5,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.helpers.ImageHelper;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -33,6 +36,7 @@ public class CreatePostcardFragment extends Fragment {
 
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,7 +46,7 @@ public class CreatePostcardFragment extends Fragment {
         final String imageSrc = getArguments().getString(SELECTED_PHOTO_SRC);
         final RelativeLayout postcardLayout = (RelativeLayout) rootView.findViewById(R.id.postCardRelativeLayout);
         final ImageView postCardImageView = (ImageView) rootView.findViewById(R.id.postCardImageView);
-        final TextView postCardTextView = (TextView) rootView.findViewById(R.id.postCardTextView);
+           final TextView postCardTextView = (TextView) rootView.findViewById(R.id.postCardTextView);
         final EditText postCardEditText = (EditText) rootView.findViewById(R.id.postCardEditText);
         final Button submitButton = (Button) rootView.findViewById(R.id.submitButton);
         Picasso.with(getActivity()).load(imageSrc).into(postCardImageView);
