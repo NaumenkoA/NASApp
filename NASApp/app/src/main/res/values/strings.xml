@@ -32,7 +32,7 @@
     <string name="velocity">Velocity:</string>
     <string name="approach_date">Approach date:</string>
     <string name="miss_distance">Miss distance:</string>
-    <string name="potentially_hazardous">POTENTIALLY  HAZARDOUS!</string>
+    <string name="potentially_hazardous">HAZARDOUS!</string>
     <string name="not_hazardous">NOT  HAZARDOUS</string>
     <string name="asteroid_velocity">%s km/s</string>
     <string name="asteroid_diameter">%1$s - %2$s meters</string>

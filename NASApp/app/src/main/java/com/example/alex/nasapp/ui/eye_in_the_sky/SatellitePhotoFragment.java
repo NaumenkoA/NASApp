@@ -2,26 +2,22 @@ package com.example.alex.nasapp.ui.eye_in_the_sky;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
-import com.example.alex.nasapp.adapters.MarsImageryAdapter;
 import com.example.alex.nasapp.api.Service;
 import com.example.alex.nasapp.model.eye_in_the_sky.SatellitePhoto;
-import com.example.alex.nasapp.model.rover.RoverPhotos;
-import com.example.alex.nasapp.ui.rover.CreatePostcardFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.net.HttpURLConnection;
 
@@ -36,8 +32,11 @@ public class SatellitePhotoFragment extends Fragment {
 
     ImageView photoImageView;
     TextView dateTextView;
-    RelativeLayout container;
+    TextView latTextView;
+    TextView longTextView;
+    LinearLayout container;
     ProgressBar progressBar;
+    SatellitePhoto satellitePhoto;
 
     public SatellitePhotoFragment() {
     }
@@ -48,16 +47,30 @@ public class SatellitePhotoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_satellite_photo, container, false);
 
-        this.container = (RelativeLayout) rootView.findViewById(R.id.photoImageContainer);
+        this.container = (LinearLayout) rootView.findViewById(R.id.photoImageContainer);
         photoImageView = (ImageView) rootView.findViewById(R.id.photoImageView);
         dateTextView = (TextView) rootView.findViewById(R.id.photoDateTextView);
+        latTextView = (TextView) rootView.findViewById(R.id.latitudeTextView);
+        longTextView = (TextView) rootView.findViewById(R.id.longitudeTextView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         LatLng latLng = getArguments().getParcelable(SELECTED_LAT_LONG);
 
-        loadImageFromSatellite (latLng);
+        latTextView.setText("Latitude: " + Double.toString(latLng.latitude));
+        longTextView.setText("Longitude: " + Double.toString(latLng.longitude));
 
+        if (satellitePhoto != null) {
+            showSatellitePhotoData();
+        } else {
+            loadImageFromSatellite(latLng);
+        }
         return rootView;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     private void loadImageFromSatellite(LatLng latLng) {
@@ -81,16 +94,30 @@ public class SatellitePhotoFragment extends Fragment {
 
     private void onSuccessResponse(Response<SatellitePhoto> response) {
         if (response.code() == HttpURLConnection.HTTP_OK) {
-            SatellitePhoto satellitePhoto = response.body();
+            satellitePhoto = response.body();
             if (satellitePhoto != null) {
-                Picasso.with(getActivity()).load(satellitePhoto.getUrl()).into(photoImageView);
-                String date = satellitePhoto.getDate().substring(0,10);
-                dateTextView.setText(getActivity().getResources().getString(R.string.photo_date, date));
-                showLoading(false);
+                showSatellitePhotoData();
             }
         } else {
             onFailureResponse();
         }
+    }
+
+    private void showSatellitePhotoData() {
+        Picasso.with(getActivity()).load(satellitePhoto.getUrl())
+                .into(photoImageView, new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        showLoading(false);
+                    }
+
+                    @Override
+                    public void onError() {
+                        showLoading(false);
+                    }
+                });
+        String date = satellitePhoto.getDate().substring(0,10);
+        dateTextView.setText(getActivity().getResources().getString(R.string.photo_date, date));
     }
 
     private void onFailureResponse() {

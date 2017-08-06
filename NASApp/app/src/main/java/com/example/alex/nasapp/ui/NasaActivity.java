@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
-import com.example.alex.nasapp.adapters.MarsImageryAdapter;
 import com.example.alex.nasapp.model.asteroid.Asteroid;
 import com.example.alex.nasapp.model.rover.Photo;
 import com.example.alex.nasapp.ui.asteroid.AsteroidListFragment;
@@ -28,7 +27,10 @@ public class NasaActivity extends AppCompatActivity
     FragmentManager fragmentManager;
     Fragment fragment = null;
     public static final String SELECTED_FEATURE_ID = "selected_feature_id";
+    public static final String TAG_CURRENT_FRAGMENT = "current_fragment";
     public static final String TAG_ROVER_IMAGERY_FRAGMENT = "rover_imagery_fragment";
+    public static final String TAG_SELECT_LAT_LONG_FRAGMENT = "select_lat_long_fragment";
+    public static final String TAG_ASTEROID_LIST_FRAGMENT = "asteroid_list_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,31 +39,46 @@ public class NasaActivity extends AppCompatActivity
 
         fragmentManager = getSupportFragmentManager();
 
-        int selectedFeatureId = getIntent().getIntExtra(SELECTED_FEATURE_ID, 0);
+        fragment = fragmentManager.findFragmentByTag(TAG_CURRENT_FRAGMENT);
 
-        switch (selectedFeatureId) {
-            case 10:
-                fragment = new RoverImageryFragment();
-                break;
+        if (fragment == null) {
 
-            case 11:
-                fragment = new SelectLatLongFragment();
-                break;
+            int selectedFeatureId = getIntent().getIntExtra(SELECTED_FEATURE_ID, 0);
 
-            case 12:
-                fragment = new AsteroidListFragment();
-                break;
+            switch (selectedFeatureId) {
+                case 10:
+                    fragment = fragmentManager.findFragmentByTag(TAG_ROVER_IMAGERY_FRAGMENT);
+                    if (fragment == null) {
+                        fragment = new RoverImageryFragment();
+                    }
+                    break;
 
-            default:
-                Toast.makeText(this, "Some error has occured:(", Toast.LENGTH_SHORT).show();
+                case 11:
+                    fragment = fragmentManager.findFragmentByTag(TAG_SELECT_LAT_LONG_FRAGMENT);
+                    if (fragment == null) {
+                        fragment = new SelectLatLongFragment();
+                    }
+                    break;
+
+                case 12:
+                    fragment = fragmentManager.findFragmentByTag(TAG_ASTEROID_LIST_FRAGMENT);
+                    if (fragment == null) {
+                        fragment = new AsteroidListFragment();
+                    }
+                    break;
+
+                default:
+                    Toast.makeText(this, "Some error has occured:(", Toast.LENGTH_SHORT).show();
+            }
         }
 
         if (fragment != null) {
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragmentPlaceholder, fragment)
+                    .replace(R.id.fragmentPlaceholder, fragment, TAG_CURRENT_FRAGMENT)
                     .commit();
         }
     }
+
 
     @Override
     public void createPostcard(Photo photo) {
@@ -70,7 +87,7 @@ public class NasaActivity extends AppCompatActivity
             getSupportFragmentManager()
                     .beginTransaction()
                     .addToBackStack(TAG_ROVER_IMAGERY_FRAGMENT)
-                    .replace(R.id.fragmentPlaceholder, createPostcardFragment)
+                    .replace(R.id.fragmentPlaceholder, createPostcardFragment, TAG_CURRENT_FRAGMENT)
                     .commit();
     }
 
@@ -78,7 +95,8 @@ public class NasaActivity extends AppCompatActivity
     public void showSatellitePhoto(LatLng latLng) {
         Fragment fragment = SatellitePhotoFragment.newInstance(latLng);
         fragmentManager.beginTransaction()
-                .replace(R.id.fragmentPlaceholder, fragment)
+                .replace(R.id.fragmentPlaceholder, fragment, TAG_CURRENT_FRAGMENT)
+                .addToBackStack(TAG_SELECT_LAT_LONG_FRAGMENT)
                 .commit();
     }
 
@@ -86,7 +104,8 @@ public class NasaActivity extends AppCompatActivity
     public void sendSMSAlert(Asteroid asteroid) {
         Fragment fragment = SMSAlertFragment.newInstance(asteroid);
         fragmentManager.beginTransaction()
-                .replace(R.id.fragmentPlaceholder, fragment)
+                .replace(R.id.fragmentPlaceholder, fragment, TAG_CURRENT_FRAGMENT)
+                .addToBackStack(TAG_ASTEROID_LIST_FRAGMENT)
                 .commit();
     }
 }

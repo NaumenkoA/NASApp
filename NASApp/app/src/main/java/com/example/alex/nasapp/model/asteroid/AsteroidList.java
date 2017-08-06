@@ -28,4 +28,14 @@ public class AsteroidList {
         }
         return hazardous;
     }
+
+    public int getAsteroidPosition(List<Asteroid> asteroidList, Asteroid selectedAsteroid) {
+        int i = 0;
+        if (selectedAsteroid == null) return -1;
+        for (Asteroid asteroid:asteroidList){
+            if (asteroid.getName().equals(selectedAsteroid.getName())) return i;
+            i++;
+        }
+        return -1;
+    }
 }

@@ -30,8 +30,19 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
         this.listener = listener;
     }
 
+    public void setSelectedAsteroidPosition(int selectedAsteroidPosition) {
+        if (selectedAsteroidPosition != -1) {
+            this.selectedItemPosition = selectedAsteroidPosition;
+            itemWasSelected = true;
+            this.notifyDataSetChanged();
+        } else {
+            itemWasSelected = false;
+        }
+        notifyDataSetChanged();
+    }
+
     public interface AsteroidSelectedListener {
-        void onAsteroidSelected (Asteroid asteroid);
+        void onAsteroidSelected (int position);
     }
 
     @Override
@@ -125,8 +136,7 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
             if (!itemWasSelected) {
                 itemWasSelected = true;
             }
-            notifyDataSetChanged();
-            listener.onAsteroidSelected(asteroids.get(selectedItemPosition));
+            listener.onAsteroidSelected(selectedItemPosition);
         }
     }
 }

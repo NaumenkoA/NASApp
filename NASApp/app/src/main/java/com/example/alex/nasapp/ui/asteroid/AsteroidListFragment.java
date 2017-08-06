@@ -3,12 +3,13 @@ package com.example.alex.nasapp.ui.asteroid;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,13 +50,25 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
     ProgressBar progressBar;
     Spinner spinner;
     RecyclerView asteroidRecyclerView;
-    AsteroidList asteroidList = null;
+    AsteroidList asteroidList;
     Asteroid selectedAsteroid;
     Button sendAlertButton;
     OnSendSMSAlertListener listener;
 
     public interface OnSendSMSAlertListener {
         void sendSMSAlert(Asteroid asteroid);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
@@ -78,21 +91,25 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
         });
 
         spinner = (Spinner) rootView.findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.sort_asteroids_array, android.R.layout.simple_spinner_item);
+            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
+                    R.array.sort_asteroids_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (asteroidList == null) return;
-                switch (position) {
-                    case 0: refreshAdapterData(asteroidList.getAsteroidList());
-                        break;
-                    case 1: refreshAdapterData(asteroidList.getHazardousAsteroidList());
-                        break;
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if (asteroidList == null) return;
+                    switch (position) {
+                        case 0:
+                            refreshAdapterData(asteroidList.getAsteroidList());
+                            notifyAdapterAboutSelectedItemPosition();
+                            break;
+                        case 1:
+                            refreshAdapterData(asteroidList.getHazardousAsteroidList());
+                            notifyAdapterAboutSelectedItemPosition();
+                            break;
+                    }
                 }
-            }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -100,13 +117,42 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
             }
         });
 
-        asteroidRecyclerView = (RecyclerView) rootView.findViewById(R.id.asteroidRecyclerView);
-        asteroidRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        asteroidRecyclerView.setAdapter(new AsteroidAdapter(getActivity(), null, this));
+            asteroidRecyclerView = (RecyclerView) rootView.findViewById(R.id.asteroidRecyclerView);
+            DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
+            int columns = (int)(dm.widthPixels/dm.density)/200;
+            if (columns < 1) columns = 1;
+            asteroidRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
+                   columns));
+            asteroidRecyclerView.setAdapter(new AsteroidAdapter(getActivity(), null, this));
 
-        loadAsteroidList();
+
+        if (asteroidList == null) {
+            loadAsteroidList();
+        }  else {
+            refreshAdapterData(asteroidList.getAsteroidList());
+        }
+
+        if (selectedAsteroid != null) {
+            if (sendAlertButton.getVisibility() == View.INVISIBLE) {
+                sendAlertButton.setVisibility(View.VISIBLE);
+                notifyAdapterAboutSelectedItemPosition();
+            }
+        }
 
         return rootView;
+    }
+
+    private void notifyAdapterAboutSelectedItemPosition() {
+        int selectedPosition = -1;
+        switch (spinner.getSelectedItemPosition()){
+            case 0:
+                selectedPosition = asteroidList.getAsteroidPosition(asteroidList.getAsteroidList(), selectedAsteroid);
+                break;
+            case 1:
+                selectedPosition = asteroidList.getAsteroidPosition(asteroidList.getHazardousAsteroidList(), selectedAsteroid);
+                break;
+        }
+            ((AsteroidAdapter) asteroidRecyclerView.getAdapter()).setSelectedAsteroidPosition(selectedPosition);
     }
 
     @Override
@@ -175,8 +221,14 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
     }
 
     @Override
-    public void onAsteroidSelected(Asteroid asteroid) {
-        selectedAsteroid = asteroid;
+    public void onAsteroidSelected(int position) {
+        switch (spinner.getSelectedItemPosition()) {
+            case 0: selectedAsteroid = asteroidList.getAsteroidList().get(position);
+                break;
+            case 1: selectedAsteroid = asteroidList.getHazardousAsteroidList().get(position);
+                break;
+        }
+        notifyAdapterAboutSelectedItemPosition();
         if (sendAlertButton.getVisibility() == View.INVISIBLE) {
             sendAlertButton.setVisibility(View.VISIBLE);
             Animator animator = AnimatorInflater.loadAnimator(getActivity(),

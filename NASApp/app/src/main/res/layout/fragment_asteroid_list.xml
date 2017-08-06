@@ -6,11 +6,13 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
+        android:visibility="invisible"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <RelativeLayout
+        android:layout_marginTop="10dp"
         android:id="@+id/relativeLayout"
         android:orientation="vertical"
         android:layout_width="match_parent"

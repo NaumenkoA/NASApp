@@ -61,6 +61,12 @@ public SelectLatLongFragment () {
                 }).subscribe (disposable);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -125,17 +131,25 @@ public SelectLatLongFragment () {
     @Override
     public void onMapReady(final GoogleMap googleMap) {
 
+        if (selectedLatLng != null) {
+            showPositionOnMap(selectedLatLng, googleMap);
+        }
+
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
                 googleMap.clear();
                 selectedLatLng = latLng;
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-                googleMap.addMarker(new MarkerOptions().position(latLng));
+                showPositionOnMap(latLng, googleMap);
                 latEditText.setText(String.valueOf(latLng.latitude));
                 longEditText.setText(String.valueOf(latLng.longitude));
             }
         });
+    }
+
+    private void showPositionOnMap(LatLng latLng, GoogleMap googleMap) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        googleMap.addMarker(new MarkerOptions().position(latLng));
     }
 }
 
