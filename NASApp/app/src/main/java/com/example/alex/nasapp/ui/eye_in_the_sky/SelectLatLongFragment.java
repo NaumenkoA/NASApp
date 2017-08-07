@@ -41,6 +41,7 @@ public SelectLatLongFragment () {
     EditText latEditText;
     EditText longEditText;
     Button showImageButton;
+    SupportMapFragment mapFragment;
 
     private DisposableObserver <Boolean> disposable;
     Observable<CharSequence> observableLatEditText;
@@ -70,6 +71,7 @@ public SelectLatLongFragment () {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_select_lat_long, container, false);
 
@@ -80,8 +82,9 @@ public SelectLatLongFragment () {
         observableLatEditText = RxTextView.textChanges(latEditText);
         observableLongEditText = RxTextView.textChanges(longEditText);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapFragment = SupportMapFragment.newInstance();
         mapFragment.getMapAsync(this);
+        getChildFragmentManager().beginTransaction().replace(R.id.mapContainer, mapFragment).commit();
 
         showImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +154,7 @@ public SelectLatLongFragment () {
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.addMarker(new MarkerOptions().position(latLng));
     }
+
 }
 
 

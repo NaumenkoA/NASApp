@@ -3,6 +3,7 @@ package com.example.alex.nasapp.ui.eye_in_the_sky;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.api.Service;
 import com.example.alex.nasapp.model.eye_in_the_sky.SatellitePhoto;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
@@ -32,8 +34,6 @@ public class SatellitePhotoFragment extends Fragment {
 
     ImageView photoImageView;
     TextView dateTextView;
-    TextView latTextView;
-    TextView longTextView;
     LinearLayout container;
     ProgressBar progressBar;
     SatellitePhoto satellitePhoto;
@@ -50,14 +50,9 @@ public class SatellitePhotoFragment extends Fragment {
         this.container = (LinearLayout) rootView.findViewById(R.id.photoImageContainer);
         photoImageView = (ImageView) rootView.findViewById(R.id.photoImageView);
         dateTextView = (TextView) rootView.findViewById(R.id.photoDateTextView);
-        latTextView = (TextView) rootView.findViewById(R.id.latitudeTextView);
-        longTextView = (TextView) rootView.findViewById(R.id.longitudeTextView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 
         LatLng latLng = getArguments().getParcelable(SELECTED_LAT_LONG);
-
-        latTextView.setText("Latitude: " + Double.toString(latLng.latitude));
-        longTextView.setText("Longitude: " + Double.toString(latLng.longitude));
 
         if (satellitePhoto != null) {
             showSatellitePhotoData();
@@ -122,7 +117,7 @@ public class SatellitePhotoFragment extends Fragment {
 
     private void onFailureResponse() {
         showLoading(false);
-        Toast.makeText(getActivity(), "Some error occurred. Please try again:(", Toast.LENGTH_SHORT).show();
+        Snackbar.make(container, getResources().getString(R.string.internet_error_message), Snackbar.LENGTH_LONG).show();
     }
 
     private void showLoading(boolean isLoading) {

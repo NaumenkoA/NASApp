@@ -25,23 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <TextView
-        android:textColor="#909090"
-        android:textSize="20sp"
-        android:layout_marginTop="5dp"
-        android:id="@+id/latitudeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:textColor="#909090"
-        android:textSize="20sp"
-        android:layout_marginTop="5dp"
-        android:id="@+id/longitudeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-        <ImageView
+         <ImageView
         android:id="@+id/photoImageView"
         android:contentDescription="@string/satellite_photo_on_selected_latitude_and_longitude"
         android:layout_width="match_parent"
