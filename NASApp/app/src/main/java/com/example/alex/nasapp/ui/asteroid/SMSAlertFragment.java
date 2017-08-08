@@ -3,13 +3,18 @@ package com.example.alex.nasapp.ui.asteroid;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -21,16 +26,23 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.helpers.StringHelper;
 import com.example.alex.nasapp.model.asteroid.Asteroid;
+import com.jakewharton.rxbinding2.widget.RxTextView;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.observers.DisposableObserver;
 
 
 public class SMSAlertFragment extends Fragment {
 
 
     private static final String SELECTED_ASTEROID = "selected_asteroid";
+    public static final String SENT = "sent";
     private static final int SEND_SMS_PERMISSION_REQUEST = 21;
     private static final int READ_CONTACTS_PERMISSION_REQUEST = 22;
     private static final int PICK_CONTACT_REQUEST = 23;
@@ -39,6 +51,12 @@ public class SMSAlertFragment extends Fragment {
     private EditText smsEditText;
     private Button sendSMSbutton;
     private ImageButton pickContactButton;
+    private RelativeLayout rootLayout;
+    BroadcastReceiver smsSentBroadcastReceiver;
+
+    private DisposableObserver<Boolean> disposable;
+    Observable<CharSequence> observablePhoneEditText;
+    Observable<CharSequence> observableSmsEditText;
 
     public SMSAlertFragment() {
 
@@ -49,10 +67,14 @@ public class SMSAlertFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_sms_alert, container, false);
+        rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
         smsEditText = (EditText) rootView.findViewById(R.id.smsEditText);
         sendSMSbutton = (Button) rootView.findViewById(R.id.sendSMSButton);
         phoneEditText = (EditText) rootView.findViewById(R.id.phoneEditText);
         pickContactButton = (ImageButton) rootView.findViewById(R.id.pickContactsButton);
+
+        observablePhoneEditText = RxTextView.textChanges(phoneEditText);
+        observableSmsEditText = RxTextView.textChanges(smsEditText);
 
         Asteroid asteroid = getArguments().getParcelable(SELECTED_ASTEROID);
         String smsText = "";
@@ -92,6 +114,20 @@ public class SMSAlertFragment extends Fragment {
             }
         });
 
+        disposable = new DisposableObserver<Boolean>() {
+            @Override
+            public void onNext(Boolean value) {sendSMSbutton.setEnabled(value);
+            }
+            @Override
+            public void onError(Throwable e) {
+
+            }
+            @Override
+            public void onComplete() {
+
+            }
+        };
+
         return rootView;
     }
 
@@ -101,10 +137,64 @@ public class SMSAlertFragment extends Fragment {
         startActivityForResult(pickContactIntent, PICK_CONTACT_REQUEST);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Register for SMS send action
+        smsSentBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String result = "";
+
+                switch (getResultCode()) {
+
+                    case Activity.RESULT_OK:
+                        result = "SMS alert successfully sent";
+                        break;
+
+                    default:
+                        result = "Some error occurred. Please check the recipient number and try again";
+
+                }
+                Snackbar.make(rootLayout, result, Snackbar.LENGTH_SHORT).show();
+            }
+
+        };
+        getActivity().registerReceiver(smsSentBroadcastReceiver, new IntentFilter(SENT));
+
+        // subscribe for editText events
+
+        Observable.combineLatest(
+                observablePhoneEditText, observableSmsEditText, new BiFunction<CharSequence, CharSequence, Boolean>() {
+                    @Override
+                    public Boolean apply(CharSequence charSequence, CharSequence charSequence2) {
+                        return  (charSequence.length() > 0
+                                && charSequence2.length() > 0);
+
+                    }
+                }).subscribe (disposable);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(smsSentBroadcastReceiver);
+
+        disposable.dispose();
+    }
+
     private void sendSMS() {
+        Intent sentIntent = new Intent(SENT);
+
+        PendingIntent sentPI = PendingIntent.getBroadcast(
+                getActivity().getApplicationContext(), 0, sentIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
         SmsManager smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(phoneEditText.getText().toString(), null,
-                smsEditText.getText().toString(), null, null);
+                smsEditText.getText().toString(), sentPI, null);
+
     }
 
     private boolean checkPermission (String permissionType,int requestCode) {

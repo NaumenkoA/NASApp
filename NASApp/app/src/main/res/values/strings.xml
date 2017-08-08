@@ -49,5 +49,6 @@
     <string name="sms_text_hint">SMS text:</string>
     <string name="mars_image_transition_name">marsRoverImage</string>
     <string name="internet_error_message">Some error occurred. Please check your internet connection and try again.</string>
+    <string name="lat_long_input_error_message">Some error occurred. Please check latitude and longitude and try again.</string>
 
 </resources>

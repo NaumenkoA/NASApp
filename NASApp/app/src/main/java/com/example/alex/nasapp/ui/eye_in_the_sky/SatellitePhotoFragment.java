@@ -99,26 +99,35 @@ public class SatellitePhotoFragment extends Fragment {
     }
 
     private void showSatellitePhotoData() {
-        Picasso.with(getActivity()).load(satellitePhoto.getUrl())
-                .into(photoImageView, new com.squareup.picasso.Callback() {
-                    @Override
-                    public void onSuccess() {
-                        showLoading(false);
-                    }
+        if (satellitePhoto.getUrl() == null || satellitePhoto.getDate() == null){
+            latLongInputIsUncorrect();
+        } else {
+            Picasso.with(getActivity()).load(satellitePhoto.getUrl())
+                    .into(photoImageView, new com.squareup.picasso.Callback() {
+                        @Override
+                        public void onSuccess() {
+                            showLoading(false);
+                        }
 
-                    @Override
-                    public void onError() {
-                        showLoading(false);
-                    }
-                });
-        String date = satellitePhoto.getDate().substring(0,10);
-        dateTextView.setText(getActivity().getResources().getString(R.string.photo_date, date));
+                        @Override
+                        public void onError() {
+                            showLoading(false);
+                        }
+                    });
+            String date = satellitePhoto.getDate().substring(0, 10);
+            dateTextView.setText(getActivity().getResources().getString(R.string.photo_date, date));
+        }
+    }
+
+    private void latLongInputIsUncorrect() {
+        showLoading(false);
+        Snackbar.make(container, getResources().getString(R.string.internet_error_message), Snackbar.LENGTH_LONG).show();
     }
 
     private void onFailureResponse() {
         showLoading(false);
-        Snackbar.make(container, getResources().getString(R.string.internet_error_message), Snackbar.LENGTH_LONG).show();
-    }
+        Snackbar.make(container, getResources().getString(R.string.lat_long_input_error_message), Snackbar.LENGTH_LONG).show();
+}
 
     private void showLoading(boolean isLoading) {
         if (isLoading) {
