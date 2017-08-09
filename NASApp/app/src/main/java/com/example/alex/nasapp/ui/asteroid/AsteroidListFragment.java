@@ -47,6 +47,9 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
 
     }
 
+    public static final String ASTEROID_LIST = "asteroid_list";
+    public static final String SELECTED_ASTEROID = "selected_asteroid";
+
     RelativeLayout relativeLayout;
     ProgressBar progressBar;
     Spinner spinner;
@@ -63,19 +66,19 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
+        outState.putParcelable(ASTEROID_LIST, asteroidList);
+        outState.putParcelable(SELECTED_ASTEROID, selectedAsteroid);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_asteroid_list, container, false);
+
+        if (savedInstanceState != null) {
+            asteroidList = savedInstanceState.getParcelable(ASTEROID_LIST);
+            selectedAsteroid = savedInstanceState.getParcelable(SELECTED_ASTEROID);
+        }
 
         relativeLayout = (RelativeLayout) rootView.findViewById(R.id.relativeLayout);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -120,7 +123,7 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
 
             asteroidRecyclerView = (RecyclerView) rootView.findViewById(R.id.asteroidRecyclerView);
             DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
-            int columns = (int)(dm.widthPixels/dm.density)/200;
+            int columns = (int)(dm.widthPixels/dm.density)/300;
             if (columns < 1) columns = 1;
             asteroidRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),
                    columns));
@@ -238,4 +241,6 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
             animator.start();
         }
     }
+
+
 }

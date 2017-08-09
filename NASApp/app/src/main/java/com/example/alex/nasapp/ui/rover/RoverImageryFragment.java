@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,12 +34,16 @@ import retrofit2.Response;
 
 public class RoverImageryFragment extends Fragment implements MarsImageryAdapter.ItemSelectedListener{
 
+    public static final String ROVER_PHOTOS = "rover_photos";
+    public static final String SELECTED_PHOTO_POSITION = "selected_photo_position";
+
     RelativeLayout relativeLayout;
     RoverPhotos roverPhotos;
     RecyclerView roverRecyclerView;
     ProgressBar progressBar;
     Button createPostcardButton;
     Photo selectedPhoto;
+    Integer selectedPosition;
     OnCreatePostcardListener listener;
 
     public interface OnCreatePostcardListener {
@@ -48,21 +54,49 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ROVER_PHOTOS, roverPhotos);
+        if (selectedPosition != null) {
+            outState.putInt(SELECTED_PHOTO_POSITION, selectedPosition);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_rover_imagery, container, false);
 
+        if (savedInstanceState != null) {
+            roverPhotos = savedInstanceState.getParcelable(ROVER_PHOTOS);
+            selectedPosition = savedInstanceState.getInt(SELECTED_PHOTO_POSITION, -1);
+        }
+
         relativeLayout = (RelativeLayout) rootView.findViewById(R.id.relativeLayout);
         roverRecyclerView = (RecyclerView) rootView.findViewById(R.id.roverRecyclerView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         createPostcardButton = (Button) rootView.findViewById(R.id.createPostcardButton);
 
-        roverRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
+        int columns = (int)(dm.widthPixels/dm.density)/300;
+        if (columns < 1) columns = 1;
+
+        roverRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns));
         roverRecyclerView.setAdapter(new MarsImageryAdapter(null, getActivity(), this));
 
-        loadImagesFromMarsRover(1700, 0);
+        if (roverPhotos == null) {
+            loadImagesFromMarsRover(1700, 0);
+        } else {
+            uploadPhotos();
+        }
+
+        if (selectedPosition != null && selectedPosition != -1) {
+            selectedPhoto = roverPhotos.getPhotos().get(selectedPosition);
+            createPostcardButton.setVisibility(View.VISIBLE);
+            ((MarsImageryAdapter) roverRecyclerView.getAdapter()).setSelectedPosition(selectedPosition);
+        }
 
         createPostcardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,12 +139,16 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
         if (response.code() == HttpURLConnection.HTTP_OK) {
             roverPhotos = response.body();
             if (roverPhotos != null) {
-                ((MarsImageryAdapter) roverRecyclerView.getAdapter()).upload(roverPhotos.getPhotos());
+                uploadPhotos();
                 showLoading(false);
             }
         } else {
             onFailureResponse();
         }
+    }
+
+    private void uploadPhotos() {
+        ((MarsImageryAdapter) roverRecyclerView.getAdapter()).upload(roverPhotos.getPhotos());
     }
 
     private void onFailureResponse() {
@@ -129,8 +167,9 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
     }
 
     @Override
-    public void onItemSelected(Photo photo) {
-        selectedPhoto = photo;
+    public void onItemSelected(int position) {
+        selectedPosition = position;
+        selectedPhoto = roverPhotos.getPhotos().get(position);
         if (createPostcardButton.getVisibility() == View.INVISIBLE) {
             createPostcardButton.setVisibility(View.VISIBLE);
             Animator animator = AnimatorInflater.loadAnimator(getActivity(),

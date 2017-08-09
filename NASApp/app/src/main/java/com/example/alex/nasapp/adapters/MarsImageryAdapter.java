@@ -23,8 +23,14 @@ public class MarsImageryAdapter extends RecyclerView.Adapter <MarsImageryAdapter
     private boolean photoWasSelected = false;
     private ItemSelectedListener listener;
 
+    public void setSelectedPosition(Integer selectedPosition) {
+        this.selectedItemPosition = selectedPosition;
+        photoWasSelected = true;
+        notifyDataSetChanged();
+    }
+
     public interface ItemSelectedListener {
-        void onItemSelected (Photo selectedPhoto);
+        void onItemSelected (int selectedPosition);
     };
 
     public MarsImageryAdapter (List <Photo> photos, Activity activity, ItemSelectedListener listener) {
@@ -97,7 +103,7 @@ public class MarsImageryAdapter extends RecyclerView.Adapter <MarsImageryAdapter
                 photoWasSelected = true;
             }
             notifyDataSetChanged();
-            listener.onItemSelected(photos.get(selectedItemPosition));
+            listener.onItemSelected(selectedItemPosition);
         }
     }
 }

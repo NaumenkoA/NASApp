@@ -31,6 +31,7 @@ public class SatellitePhotoFragment extends Fragment {
 
 
     private static final String SELECTED_LAT_LONG = "selected_lat_long";
+    public static final String SATELLITE_PHOTO = "satellite_photo";
 
     ImageView photoImageView;
     TextView dateTextView;
@@ -41,11 +42,21 @@ public class SatellitePhotoFragment extends Fragment {
     public SatellitePhotoFragment() {
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(SATELLITE_PHOTO, satellitePhoto);
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_satellite_photo, container, false);
+
+        if (savedInstanceState != null) {
+            satellitePhoto = savedInstanceState.getParcelable(SATELLITE_PHOTO);
+        }
 
         this.container = (LinearLayout) rootView.findViewById(R.id.photoImageContainer);
         photoImageView = (ImageView) rootView.findViewById(R.id.photoImageView);
@@ -62,11 +73,6 @@ public class SatellitePhotoFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
 
     private void loadImageFromSatellite(LatLng latLng) {
         showLoading (true);

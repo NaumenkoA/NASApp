@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.helpers.StringHelper;
@@ -61,6 +62,8 @@ public class SMSAlertFragment extends Fragment {
     public SMSAlertFragment() {
 
     }
+
+
 
 
     @Override
@@ -114,20 +117,6 @@ public class SMSAlertFragment extends Fragment {
             }
         });
 
-        disposable = new DisposableObserver<Boolean>() {
-            @Override
-            public void onNext(Boolean value) {sendSMSbutton.setEnabled(value);
-            }
-            @Override
-            public void onError(Throwable e) {
-
-            }
-            @Override
-            public void onComplete() {
-
-            }
-        };
-
         return rootView;
     }
 
@@ -163,7 +152,20 @@ public class SMSAlertFragment extends Fragment {
         };
         getActivity().registerReceiver(smsSentBroadcastReceiver, new IntentFilter(SENT));
 
-        // subscribe for editText events
+        disposable = new DisposableObserver<Boolean>() {
+            @Override
+            public void onNext(Boolean value) {
+                sendSMSbutton.setEnabled(value);
+            }
+            @Override
+            public void onError(Throwable e) {
+
+            }
+            @Override
+            public void onComplete() {
+
+            }
+        };
 
         Observable.combineLatest(
                 observablePhoneEditText, observableSmsEditText, new BiFunction<CharSequence, CharSequence, Boolean>() {
@@ -174,15 +176,16 @@ public class SMSAlertFragment extends Fragment {
 
                     }
                 }).subscribe (disposable);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
         getActivity().unregisterReceiver(smsSentBroadcastReceiver);
-
         disposable.dispose();
     }
+
 
     private void sendSMS() {
         Intent sentIntent = new Intent(SENT);

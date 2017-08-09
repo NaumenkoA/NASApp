@@ -1,13 +1,16 @@
 
 package com.example.alex.nasapp.model.asteroid;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AsteroidList {
+public class AsteroidList implements Parcelable {
 
     public AsteroidList (List <Asteroid> asteroids) {
         this.asteroidList = asteroids;
@@ -38,4 +41,30 @@ public class AsteroidList {
         }
         return -1;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeTypedList(this.asteroidList);
+    }
+
+    protected AsteroidList(Parcel in) {
+        this.asteroidList = in.createTypedArrayList(Asteroid.CREATOR);
+    }
+
+    public static final Parcelable.Creator<AsteroidList> CREATOR = new Parcelable.Creator<AsteroidList>() {
+        @Override
+        public AsteroidList createFromParcel(Parcel source) {
+            return new AsteroidList(source);
+        }
+
+        @Override
+        public AsteroidList[] newArray(int size) {
+            return new AsteroidList[size];
+        }
+    };
 }
