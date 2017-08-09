@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -82,6 +83,8 @@ public static final String CAMERA_ZOOM_LEVEL = "camera_zoom_level";
         rootLayout = (LinearLayout) rootView.findViewById(R.id.rootLayout);
         latEditText = (EditText) rootView.findViewById(R.id.latEditText);
         longEditText = (EditText) rootView.findViewById(R.id.longEditText);
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         showImageButton = (Button) rootView.findViewById(R.id.showImageButton);
 
         observableLatEditText = RxTextView.textChanges(latEditText);

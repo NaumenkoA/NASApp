@@ -27,6 +27,7 @@ import com.example.alex.nasapp.model.rover.Photo;
 import com.example.alex.nasapp.model.rover.RoverPhotos;
 
 import java.net.HttpURLConnection;
+import java.util.Random;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,8 +87,11 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
         roverRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns));
         roverRecyclerView.setAdapter(new MarsImageryAdapter(null, getActivity(), this));
 
+
         if (roverPhotos == null) {
-            loadImagesFromMarsRover(1700, 0);
+            Random rn = new Random();
+            int randomSol = rn.nextInt(779) + 1000;
+            loadImagesFromMarsRover(randomSol, 0);
         } else {
             uploadPhotos();
         }

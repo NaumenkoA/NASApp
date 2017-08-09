@@ -43,10 +43,12 @@
     <EditText
         android:id="@+id/smsEditText"
         android:layout_below="@id/smsHintTextView"
+        android:padding="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:background="#f4c4c4"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
+        android:minHeight="250dp"
         android:inputType="none"/>
 
     <Button
