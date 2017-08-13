@@ -8,18 +8,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.adapters.MarsImageryAdapter;
 import com.example.alex.nasapp.api.Service;
@@ -39,9 +35,9 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
     public static final String SELECTED_PHOTO_POSITION = "selected_photo_position";
 
     RelativeLayout relativeLayout;
+    ProgressBar progressBar;
     RoverPhotos roverPhotos;
     RecyclerView roverRecyclerView;
-    ProgressBar progressBar;
     Button createPostcardButton;
     Photo selectedPhoto;
     Integer selectedPosition;
@@ -58,6 +54,7 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //rotation handling
         outState.putParcelable(ROVER_PHOTOS, roverPhotos);
         if (selectedPosition != null) {
             outState.putInt(SELECTED_PHOTO_POSITION, selectedPosition);
@@ -70,16 +67,18 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_rover_imagery, container, false);
 
+        //rotation handling
         if (savedInstanceState != null) {
             roverPhotos = savedInstanceState.getParcelable(ROVER_PHOTOS);
             selectedPosition = savedInstanceState.getInt(SELECTED_PHOTO_POSITION, -1);
         }
 
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         relativeLayout = (RelativeLayout) rootView.findViewById(R.id.relativeLayout);
         roverRecyclerView = (RecyclerView) rootView.findViewById(R.id.roverRecyclerView);
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         createPostcardButton = (Button) rootView.findViewById(R.id.createPostcardButton);
 
+        //adjust number of columns depending on screen size
         DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
         int columns = (int)(dm.widthPixels/dm.density)/300;
         if (columns < 1) columns = 1;
@@ -90,7 +89,8 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
 
         if (roverPhotos == null) {
             Random rn = new Random();
-            int randomSol = rn.nextInt(779) + 1000;
+            //get random sol number (range from 1000 to 1700)
+            int randomSol = rn.nextInt(700) + 1000;
             loadImagesFromMarsRover(randomSol, 0);
         } else {
             uploadPhotos();
@@ -124,7 +124,7 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
     }
 
     private void loadImagesFromMarsRover(int sol, int page) {
-        showLoading (true);
+        showLoading(true);
         Service.getNasaApi().getMarsRoverImages(sol, page)
                 .enqueue(new Callback<RoverPhotos>() {
                     @Override
@@ -139,13 +139,21 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
                 });
     }
 
+    private void showLoading(boolean isLoading) {
+        if (isLoading) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.INVISIBLE);
+        }
+    }
+
     private void onSuccessResponse(Response<RoverPhotos> response) {
         if (response.code() == HttpURLConnection.HTTP_OK) {
             roverPhotos = response.body();
             if (roverPhotos != null) {
-                uploadPhotos();
                 showLoading(false);
-            }
+                uploadPhotos();
+            } else {onFailureResponse();}
         } else {
             onFailureResponse();
         }
@@ -158,16 +166,6 @@ public class RoverImageryFragment extends Fragment implements MarsImageryAdapter
     private void onFailureResponse() {
         showLoading(false);
         Snackbar.make(relativeLayout, getResources().getString(R.string.internet_error_message), Snackbar.LENGTH_LONG).show();
-    }
-
-    private void showLoading(boolean isLoading) {
-        if (isLoading) {
-            relativeLayout.setVisibility(View.INVISIBLE);
-            progressBar.setVisibility(View.VISIBLE);
-        } else {
-            relativeLayout.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.INVISIBLE);
-        }
     }
 
     @Override

@@ -47,7 +47,7 @@ public class SatellitePhoto implements Parcelable {
     public SatellitePhoto() {
     }
 
-    protected SatellitePhoto(Parcel in) {
+    private SatellitePhoto(Parcel in) {
         this.date = in.readString();
         this.url = in.readString();
         this.id = in.readString();

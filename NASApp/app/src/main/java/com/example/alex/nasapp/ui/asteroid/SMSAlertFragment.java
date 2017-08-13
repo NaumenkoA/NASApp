@@ -1,6 +1,5 @@
 package com.example.alex.nasapp.ui.asteroid;
 
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -13,7 +12,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -22,12 +20,10 @@ import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.helpers.StringHelper;
@@ -41,7 +37,6 @@ import io.reactivex.observers.DisposableObserver;
 
 public class SMSAlertFragment extends Fragment {
 
-
     private static final String SELECTED_ASTEROID = "selected_asteroid";
     public static final String SENT = "sent";
     private static final int SEND_SMS_PERMISSION_REQUEST = 21;
@@ -50,8 +45,7 @@ public class SMSAlertFragment extends Fragment {
 
     private EditText phoneEditText;
     private EditText smsEditText;
-    private Button sendSMSbutton;
-    private ImageButton pickContactButton;
+    private Button sendSMSButton;
     private RelativeLayout rootLayout;
     BroadcastReceiver smsSentBroadcastReceiver;
 
@@ -63,18 +57,15 @@ public class SMSAlertFragment extends Fragment {
 
     }
 
-
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_sms_alert, container, false);
         rootLayout = (RelativeLayout) rootView.findViewById(R.id.rootLayout);
         smsEditText = (EditText) rootView.findViewById(R.id.smsEditText);
-        sendSMSbutton = (Button) rootView.findViewById(R.id.sendSMSButton);
+        sendSMSButton = (Button) rootView.findViewById(R.id.sendSMSButton);
         phoneEditText = (EditText) rootView.findViewById(R.id.phoneEditText);
-        pickContactButton = (ImageButton) rootView.findViewById(R.id.pickContactsButton);
+        ImageButton pickContactButton = (ImageButton) rootView.findViewById(R.id.pickContactsButton);
 
         observablePhoneEditText = RxTextView.textChanges(phoneEditText);
         observableSmsEditText = RxTextView.textChanges(smsEditText);
@@ -103,8 +94,7 @@ public class SMSAlertFragment extends Fragment {
             }
         });
 
-
-        sendSMSbutton.setOnClickListener(new View.OnClickListener() {
+        sendSMSButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -120,6 +110,7 @@ public class SMSAlertFragment extends Fragment {
         return rootView;
     }
 
+    //pick contact from contact book
     private void pickContact() {
         Intent pickContactIntent = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
         pickContactIntent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
@@ -129,7 +120,7 @@ public class SMSAlertFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        // Register for SMS send action
+        // Register broadcast receiver for SMS send action
         smsSentBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -155,7 +146,7 @@ public class SMSAlertFragment extends Fragment {
         disposable = new DisposableObserver<Boolean>() {
             @Override
             public void onNext(Boolean value) {
-                sendSMSbutton.setEnabled(value);
+                sendSMSButton.setEnabled(value);
             }
             @Override
             public void onError(Throwable e) {
@@ -167,6 +158,7 @@ public class SMSAlertFragment extends Fragment {
             }
         };
 
+        //enable sendSMSButton only if phone and text are filled by user
         Observable.combineLatest(
                 observablePhoneEditText, observableSmsEditText, new BiFunction<CharSequence, CharSequence, Boolean>() {
                     @Override
@@ -232,9 +224,12 @@ public class SMSAlertFragment extends Fragment {
                             ContactsContract.CommonDataKinds.Phone._ID + "=?",
                             new String[]{result.getLastPathSegment()}, null);
 
-                    if (cursor.getCount() >= 1 && cursor.moveToFirst()) {
+                    if (cursor != null && cursor.getCount() >= 1 && cursor.moveToFirst()) {
                         String number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                         phoneEditText.setText(number);
+                    }
+                    if (cursor != null) {
+                        cursor.close();
                     }
                 }
             }

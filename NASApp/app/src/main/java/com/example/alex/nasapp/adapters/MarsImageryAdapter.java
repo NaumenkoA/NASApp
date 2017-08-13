@@ -1,16 +1,17 @@
 package com.example.alex.nasapp.adapters;
 
 import android.app.Activity;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.model.rover.Photo;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class MarsImageryAdapter extends RecyclerView.Adapter <MarsImageryAdapter
     private boolean photoWasSelected = false;
     private ItemSelectedListener listener;
 
+    //set position of item selected by user
     public void setSelectedPosition(Integer selectedPosition) {
         this.selectedItemPosition = selectedPosition;
         photoWasSelected = true;
@@ -31,7 +33,7 @@ public class MarsImageryAdapter extends RecyclerView.Adapter <MarsImageryAdapter
 
     public interface ItemSelectedListener {
         void onItemSelected (int selectedPosition);
-    };
+    }
 
     public MarsImageryAdapter (List <Photo> photos, Activity activity, ItemSelectedListener listener) {
         this.photos = photos;
@@ -49,6 +51,8 @@ public class MarsImageryAdapter extends RecyclerView.Adapter <MarsImageryAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(photos.get(position));
+
+        //check if binded item is selected
         if (photoWasSelected && selectedItemPosition == position) {
             holder.selectedImageView.setVisibility(View.VISIBLE);
         } else
@@ -71,18 +75,19 @@ public class MarsImageryAdapter extends RecyclerView.Adapter <MarsImageryAdapter
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        public ImageView getRoverImageView() {
-            return roverImageView;
-        }
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         ImageView roverImageView;
         ImageView selectedImageView;
         TextView dateTextView;
         TextView roverNameTextView;
+        RelativeLayout relativeLayout;
+        ProgressBar progressBar;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
+            relativeLayout = (RelativeLayout) itemView.findViewById(R.id.relativeLayout);
+            progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
             roverImageView = (ImageView) itemView.findViewById(R.id.marsRoverImageView);
             selectedImageView = (ImageView) itemView.findViewById(R.id.selectedPhotoImageView);
             dateTextView = (TextView) itemView.findViewById(R.id.roverNameTextView);
@@ -91,9 +96,25 @@ public class MarsImageryAdapter extends RecyclerView.Adapter <MarsImageryAdapter
         }
 
         void bind (Photo photo) {
-            Picasso.with(activity).load(photo.getImgSrc()).into(roverImageView);
+            Picasso.with(activity).load(photo.getImgSrc()).into(roverImageView, new Callback() {
+                @Override
+                public void onSuccess() {
+                    stopLoading();
+                }
+
+                @Override
+                public void onError() {
+                    stopLoading();
+                }
+            });
             dateTextView.setText(photo.getEarthDate());
             roverNameTextView.setText(activity.getResources().getString(R.string.rover_name, photo.getRover().getName()));
+        }
+
+        //hide progress bar and show Mars Rover image to user
+        private void stopLoading() {
+            progressBar.setVisibility(View.INVISIBLE);
+            relativeLayout.setVisibility(View.VISIBLE);
         }
 
         @Override

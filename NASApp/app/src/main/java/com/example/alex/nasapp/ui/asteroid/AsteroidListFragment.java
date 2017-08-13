@@ -5,7 +5,6 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -59,6 +58,7 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
     Button sendAlertButton;
     OnSendSMSAlertListener listener;
 
+    //listener for creating SMS alert
     public interface OnSendSMSAlertListener {
         void sendSMSAlert(Asteroid asteroid);
     }
@@ -66,6 +66,7 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //rotation handling
         outState.putParcelable(ASTEROID_LIST, asteroidList);
         outState.putParcelable(SELECTED_ASTEROID, selectedAsteroid);
     }
@@ -75,6 +76,7 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
                              Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_asteroid_list, container, false);
 
+        //rotation handling
         if (savedInstanceState != null) {
             asteroidList = savedInstanceState.getParcelable(ASTEROID_LIST);
             selectedAsteroid = savedInstanceState.getParcelable(SELECTED_ASTEROID);
@@ -122,6 +124,7 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
         });
 
             asteroidRecyclerView = (RecyclerView) rootView.findViewById(R.id.asteroidRecyclerView);
+            //adjust number of columns in RecyclerView to screen width
             DisplayMetrics dm = getActivity().getResources().getDisplayMetrics();
             int columns = (int)(dm.widthPixels/dm.density)/300;
             if (columns < 1) columns = 1;
@@ -139,8 +142,8 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
         if (selectedAsteroid != null) {
             if (sendAlertButton.getVisibility() == View.INVISIBLE) {
                 sendAlertButton.setVisibility(View.VISIBLE);
-                notifyAdapterAboutSelectedItemPosition();
             }
+            notifyAdapterAboutSelectedItemPosition();
         }
 
         return rootView;
@@ -174,7 +177,9 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
         showLoading (true);
 
         Locale locale = Locale.getDefault();
+        //get current date
         String startDate = new SimpleDateFormat("yyyy-MM-dd", locale).format(new Date());
+        //make API call
         Service.getNasaApi().getAsteroidList(startDate)
                 .enqueue(new Callback<JsonElement>() {
                     @Override
@@ -190,7 +195,7 @@ public class AsteroidListFragment extends Fragment implements AsteroidAdapter.As
     }
 
     private void onSuccessResponse(Response<JsonElement> response) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
+                if (response.code() == HttpURLConnection.HTTP_OK && response.body() != null) {
                     GsonBuilder gsonBuilder = new GsonBuilder();
                     gsonBuilder.registerTypeAdapter(AsteroidList.class, new AsteroidDeserializer());
                     Gson gson = gsonBuilder.create();

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
+// deserializer for dynamic JSON response
 public class AsteroidDeserializer implements JsonDeserializer<AsteroidList> {
     @Override
     public AsteroidList deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

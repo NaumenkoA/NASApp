@@ -63,7 +63,7 @@ public class Photo implements Parcelable {
         dest.writeParcelable(this.rover, flags);
     }
 
-    protected Photo(Parcel in) {
+    private Photo(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.sol = (Integer) in.readValue(Integer.class.getClassLoader());
         this.camera = in.readParcelable(Camera.class.getClassLoader());

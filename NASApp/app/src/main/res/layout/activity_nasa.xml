@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_margin_right"
     android:paddingEnd="@dimen/activity_margin_right"
     android:id="@+id/fragmentPlaceholder"
-    android:background="@color/colorGrey"
+    android:background="@color/colorLightGrey"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.alex.nasapp.ui.NasaActivity">

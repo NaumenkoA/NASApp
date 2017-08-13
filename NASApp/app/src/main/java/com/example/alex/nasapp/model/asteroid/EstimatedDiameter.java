@@ -22,20 +22,8 @@ public class EstimatedDiameter implements Parcelable {
     @Expose
     private Feet feet;
 
-    public Kilometers getKilometers() {
-        return kilometers;
-    }
-
     public Meters getMeters() {
         return meters;
-    }
-
-    public Miles getMiles() {
-        return miles;
-    }
-
-    public Feet getFeet() {
-        return feet;
     }
 
     @Override
@@ -54,7 +42,7 @@ public class EstimatedDiameter implements Parcelable {
     public EstimatedDiameter() {
     }
 
-    protected EstimatedDiameter(Parcel in) {
+    private EstimatedDiameter(Parcel in) {
         this.kilometers = in.readParcelable(Kilometers.class.getClassLoader());
         this.meters = in.readParcelable(Meters.class.getClassLoader());
         this.miles = in.readParcelable(Miles.class.getClassLoader());

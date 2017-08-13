@@ -7,11 +7,11 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Links implements Parcelable {
+class Links implements Parcelable {
 
     @SerializedName("self")
     @Expose
-    public String self;
+    private String self;
 
     @Override
     public int describeContents() {
@@ -26,7 +26,7 @@ public class Links implements Parcelable {
     public Links() {
     }
 
-    protected Links(Parcel in) {
+    private Links(Parcel in) {
         this.self = in.readString();
     }
 

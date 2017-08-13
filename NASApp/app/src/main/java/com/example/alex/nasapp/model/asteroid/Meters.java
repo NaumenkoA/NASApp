@@ -38,7 +38,7 @@ public class Meters implements Parcelable {
     public Meters() {
     }
 
-    protected Meters(Parcel in) {
+    private Meters(Parcel in) {
         this.estimatedDiameterMin = (Double) in.readValue(Double.class.getClassLoader());
         this.estimatedDiameterMax = (Double) in.readValue(Double.class.getClassLoader());
     }

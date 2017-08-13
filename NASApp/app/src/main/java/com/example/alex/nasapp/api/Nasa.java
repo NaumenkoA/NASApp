@@ -1,14 +1,8 @@
 package com.example.alex.nasapp.api;
 
-import com.example.alex.nasapp.model.asteroid.AsteroidList;
 import com.example.alex.nasapp.model.eye_in_the_sky.SatellitePhoto;
 import com.example.alex.nasapp.model.rover.RoverPhotos;
-import com.google.android.gms.common.api.Result;
 import com.google.gson.JsonElement;
-
-import java.text.SimpleDateFormat;
-import java.util.AbstractList;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;

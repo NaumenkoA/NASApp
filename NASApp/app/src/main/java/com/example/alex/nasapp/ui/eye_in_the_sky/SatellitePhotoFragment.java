@@ -2,7 +2,6 @@ package com.example.alex.nasapp.ui.eye_in_the_sky;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,12 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.api.Service;
 import com.example.alex.nasapp.model.eye_in_the_sky.SatellitePhoto;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
@@ -45,8 +41,8 @@ public class SatellitePhotoFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //rotation handling
         outState.putParcelable(SATELLITE_PHOTO, satellitePhoto);
-
     }
 
     @Override
@@ -54,6 +50,7 @@ public class SatellitePhotoFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_satellite_photo, container, false);
 
+        //rotation handling
         if (savedInstanceState != null) {
             satellitePhoto = savedInstanceState.getParcelable(SATELLITE_PHOTO);
         }
@@ -76,7 +73,7 @@ public class SatellitePhotoFragment extends Fragment {
 
     private void loadImageFromSatellite(LatLng latLng) {
         showLoading (true);
-
+        //making API call
         //API returns error when trying to get photo on the latest date, so the date needs to be added to the query. The error is: "No imagery for specified date."
         Service.getNasaApi().getSatellitePhoto((float) latLng.latitude, (float) latLng.longitude, "2017-05-01")
                 .enqueue(new Callback<SatellitePhoto>() {

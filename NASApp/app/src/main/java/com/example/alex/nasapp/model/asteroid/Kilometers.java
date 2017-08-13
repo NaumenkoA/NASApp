@@ -7,14 +7,14 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Kilometers implements Parcelable {
+class Kilometers implements Parcelable {
 
     @SerializedName("estimated_diameter_min")
     @Expose
-    public Double estimatedDiameterMin;
+    private Double estimatedDiameterMin;
     @SerializedName("estimated_diameter_max")
     @Expose
-    public Double estimatedDiameterMax;
+    private Double estimatedDiameterMax;
 
     @Override
     public int describeContents() {
@@ -30,7 +30,7 @@ public class Kilometers implements Parcelable {
     public Kilometers() {
     }
 
-    protected Kilometers(Parcel in) {
+    private Kilometers(Parcel in) {
         this.estimatedDiameterMin = (Double) in.readValue(Double.class.getClassLoader());
         this.estimatedDiameterMax = (Double) in.readValue(Double.class.getClassLoader());
     }

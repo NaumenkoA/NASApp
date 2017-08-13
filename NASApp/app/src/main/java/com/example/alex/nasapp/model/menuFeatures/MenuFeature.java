@@ -17,7 +17,7 @@ public class MenuFeature implements Parcelable {
         return featureNameId;
     }
 
-    public MenuFeature (int featureNameId, int imageResourceId, int featureDescription, int featureId) {
+    MenuFeature(int featureNameId, int imageResourceId, int featureDescription, int featureId) {
         this.featureNameId = featureNameId;
 
         this.imageResourceId = imageResourceId;
@@ -46,7 +46,7 @@ public class MenuFeature implements Parcelable {
         dest.writeInt(this.featureId);
     }
 
-    protected MenuFeature(Parcel in) {
+    private MenuFeature(Parcel in) {
         this.featureNameId = in.readInt();
         this.imageResourceId = in.readInt();
         this.featureDescriptionId = in.readInt();

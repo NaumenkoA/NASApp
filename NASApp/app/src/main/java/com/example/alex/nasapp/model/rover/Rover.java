@@ -64,7 +64,7 @@ public class Rover implements Parcelable {
     public Rover() {
     }
 
-    protected Rover(Parcel in) {
+    private Rover(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
         this.landingDate = in.readString();

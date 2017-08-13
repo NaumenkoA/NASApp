@@ -18,6 +18,7 @@ import com.example.alex.nasapp.ui.rover.CreatePostcardFragment;
 import com.example.alex.nasapp.ui.rover.RoverImageryFragment;
 import com.google.android.gms.maps.model.LatLng;
 
+//activity controlling fragments, which implement app functionality
 public class NasaActivity extends AppCompatActivity
         implements RoverImageryFragment.OnCreatePostcardListener,
                     SelectLatLongFragment.OnLatLongSelectedListener,

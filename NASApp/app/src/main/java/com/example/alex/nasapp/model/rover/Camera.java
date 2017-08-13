@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Camera implements Parcelable {
+class Camera implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -38,7 +38,7 @@ public class Camera implements Parcelable {
     public Camera() {
     }
 
-    protected Camera(Parcel in) {
+    private Camera(Parcel in) {
         this.id = (Integer) in.readValue(Integer.class.getClassLoader());
         this.name = in.readString();
         this.roverId = (Integer) in.readValue(Integer.class.getClassLoader());

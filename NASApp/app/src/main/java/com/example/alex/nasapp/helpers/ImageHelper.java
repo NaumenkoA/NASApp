@@ -11,9 +11,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+// helper class for creating Mars Rover postcard
 public class ImageHelper {
 
+    //create bitmap image from view
 public static Bitmap createBitmapFromView (View view) {
     Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),
             Bitmap.Config.ARGB_8888);

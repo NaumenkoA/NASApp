@@ -43,6 +43,15 @@
         <item>Show hazardous</item>
     </string-array>
 
+    <string-array name="text_colors">
+        <item>Black hole black</item>
+        <item>Earth blue</item>
+        <item>Mars red</item>
+        <item>Moon grey</item>
+        <item>Sun orange</item>
+        <item>Via lactea white</item>
+    </string-array>
+
     <string name="send_sms_alert">Send SMS alert</string>
     <string name="sms_text">Asteroid %1$sm in diameter is rushing to the Earth at speed %2$s km/s. NASA tells it would miss, but what if they\'re wrong?</string>
     <string name="enter_phone_here">Enter phone here</string>
@@ -50,5 +59,6 @@
     <string name="mars_image_transition_name">marsRoverImage</string>
     <string name="internet_error_message">Some error occurred. Please check your internet connection and try again.</string>
     <string name="lat_long_input_error_message">Some error occurred. Please check latitude and longitude and try again.</string>
+    <string name="text_color">Text color:</string>
 
 </resources>

@@ -22,20 +22,8 @@ public class MissDistance implements Parcelable {
     @Expose
     private String miles;
 
-    public String getAstronomical() {
-        return astronomical;
-    }
-
     public String getLunar() {
         return lunar;
-    }
-
-    public String getKilometers() {
-        return kilometers;
-    }
-
-    public String getMiles() {
-        return miles;
     }
 
     @Override
@@ -54,7 +42,7 @@ public class MissDistance implements Parcelable {
     public MissDistance() {
     }
 
-    protected MissDistance(Parcel in) {
+    private MissDistance(Parcel in) {
         this.astronomical = in.readString();
         this.lunar = in.readString();
         this.kilometers = in.readString();

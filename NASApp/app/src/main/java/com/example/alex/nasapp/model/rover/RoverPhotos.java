@@ -32,7 +32,7 @@ public class RoverPhotos implements Parcelable {
     public RoverPhotos() {
     }
 
-    protected RoverPhotos(Parcel in) {
+    private RoverPhotos(Parcel in) {
         this.photos = new ArrayList<Photo>();
         in.readList(this.photos, Photo.class.getClassLoader());
     }

@@ -7,9 +7,9 @@ import java.util.List;
 
 public class MenuFeatures {
 
-    public static final int POSTCARD_FROM_MARS_ID = 10;
-    public static final int EYE_IN_THE_SKY_ID = 11;
-    public static final int ASTEROID_ALERT = 12;
+    private static final int POSTCARD_FROM_MARS_ID = 10;
+    private static final int EYE_IN_THE_SKY_ID = 11;
+    private static final int ASTEROID_ALERT = 12;
 
 
     public static MenuFeature getMenuFeatures(int index) {

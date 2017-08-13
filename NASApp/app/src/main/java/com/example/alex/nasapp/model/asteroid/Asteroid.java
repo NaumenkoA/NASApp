@@ -36,24 +36,8 @@ public class Asteroid implements Parcelable {
     @Expose
     private List<CloseApproachData> closeApproachData = null;
 
-    public Links getLinks() {
-        return links;
-    }
-
-    public String getNeoReferenceId() {
-        return neoReferenceId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public String getNasaJplUrl() {
-        return nasaJplUrl;
-    }
-
-    public Double getAbsoluteMagnitudeH() {
-        return absoluteMagnitudeH;
     }
 
     public EstimatedDiameter getEstimatedDiameter() {
@@ -88,7 +72,7 @@ public class Asteroid implements Parcelable {
     public Asteroid() {
     }
 
-    protected Asteroid(Parcel in) {
+    private Asteroid(Parcel in) {
         this.links = in.readParcelable(Links.class.getClassLoader());
         this.neoReferenceId = in.readString();
         this.name = in.readString();

@@ -19,7 +19,7 @@ import java.util.List;
 public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewHolder> {
 
     private List<Asteroid> asteroids;
-    Context context;
+    private Context context;
     private int selectedItemPosition;
     private boolean itemWasSelected = false;
     private AsteroidSelectedListener listener;
@@ -36,6 +36,7 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
             itemWasSelected = true;
             this.notifyDataSetChanged();
         } else {
+            //nothing is selected
             itemWasSelected = false;
         }
         notifyDataSetChanged();
@@ -56,6 +57,7 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.bind(asteroids.get(position));
 
+        //check if binded item is selected by user
         if (itemWasSelected && selectedItemPosition == position) {
             holder.selectedImageView.setVisibility(View.VISIBLE);
         } else
@@ -73,12 +75,13 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
         }
     }
 
+    //upload new asteroid list to adapter
     public void upload(List<Asteroid> asteroid) {
         asteroids = asteroid;
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         CardView cardView;
         TextView nameTextView;
@@ -89,7 +92,7 @@ public class AsteroidAdapter extends RecyclerView.Adapter <AsteroidAdapter.ViewH
         TextView isHazardousTextView;
         ImageView selectedImageView;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.cardView);
             selectedImageView = (ImageView) itemView.findViewById(R.id.selecteAsteroidImageView);

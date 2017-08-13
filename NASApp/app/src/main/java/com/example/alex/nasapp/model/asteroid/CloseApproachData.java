@@ -29,20 +29,12 @@ public class CloseApproachData implements Parcelable {
         return closeApproachDate;
     }
 
-    public Long getEpochDateCloseApproach() {
-        return epochDateCloseApproach;
-    }
-
     public RelativeVelocity getRelativeVelocity() {
         return relativeVelocity;
     }
 
     public MissDistance getMissDistance() {
         return missDistance;
-    }
-
-    public String getOrbitingBody() {
-        return orbitingBody;
     }
 
     @Override
@@ -62,7 +54,7 @@ public class CloseApproachData implements Parcelable {
     public CloseApproachData() {
     }
 
-    protected CloseApproachData(Parcel in) {
+    private CloseApproachData(Parcel in) {
         this.closeApproachDate = in.readString();
         this.epochDateCloseApproach = (Long) in.readValue(Long.class.getClassLoader());
         this.relativeVelocity = in.readParcelable(RelativeVelocity.class.getClassLoader());

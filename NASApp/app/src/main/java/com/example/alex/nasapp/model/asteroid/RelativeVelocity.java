@@ -11,7 +11,7 @@ public class RelativeVelocity implements Parcelable {
 
     @SerializedName("kilometers_per_second")
     @Expose
-    public String kilometersPerSecond;
+    private String kilometersPerSecond;
     @SerializedName("kilometers_per_hour")
     @Expose
     private String kilometersPerHour;
@@ -23,13 +23,6 @@ public class RelativeVelocity implements Parcelable {
         return kilometersPerSecond;
     }
 
-    public String getKilometersPerHour() {
-        return kilometersPerHour;
-    }
-
-    public String getMilesPerHour() {
-        return milesPerHour;
-    }
 
     @Override
     public int describeContents() {
@@ -46,7 +39,7 @@ public class RelativeVelocity implements Parcelable {
     public RelativeVelocity() {
     }
 
-    protected RelativeVelocity(Parcel in) {
+    private RelativeVelocity(Parcel in) {
         this.kilometersPerSecond = in.readString();
         this.kilometersPerHour = in.readString();
         this.milesPerHour = in.readString();

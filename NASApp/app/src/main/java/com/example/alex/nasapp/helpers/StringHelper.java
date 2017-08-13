@@ -1,5 +1,6 @@
 package com.example.alex.nasapp.helpers;
 
+//helper class for String formatting
 public class StringHelper {
     public static String changeNumberOfCharsAfterDot(String string, int charsAfterDot) {
         if (charsAfterDot == 0) {

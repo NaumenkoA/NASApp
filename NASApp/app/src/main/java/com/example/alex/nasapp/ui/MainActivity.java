@@ -13,6 +13,7 @@ import com.example.alex.nasapp.model.menuFeatures.MenuFeatures;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+//MainActivity which holds FeatureFragments in view pager
 public class MainActivity extends FragmentActivity {
 
     @BindView (R.id.viewPager) ViewPager viewPager;

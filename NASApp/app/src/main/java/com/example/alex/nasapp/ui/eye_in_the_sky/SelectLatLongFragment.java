@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.example.alex.nasapp.R;
-import com.example.alex.nasapp.ui.rover.RoverImageryFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,7 +27,6 @@ import io.reactivex.functions.BiFunction;
 import io.reactivex.observers.DisposableObserver;
 
 import static com.example.alex.nasapp.R.string.lat_long_input_error_message;
-import static com.example.alex.nasapp.R.string.latitude;
 
 
 public class SelectLatLongFragment extends Fragment implements OnMapReadyCallback {
@@ -62,6 +60,7 @@ public static final String CAMERA_ZOOM_LEVEL = "camera_zoom_level";
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //rotation handling
         outState.putParcelable(SELECTED_LAT_LONG, selectedLatLng);
         if (googleMap != null) {
             outState.putFloat(CAMERA_ZOOM_LEVEL, googleMap.getCameraPosition().zoom);
@@ -75,6 +74,7 @@ public static final String CAMERA_ZOOM_LEVEL = "camera_zoom_level";
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_select_lat_long, container, false);
 
+        //rotation handling
         if (savedInstanceState != null) {
             selectedLatLng = savedInstanceState.getParcelable(SELECTED_LAT_LONG);
             cameraZoom = savedInstanceState.getFloat(CAMERA_ZOOM_LEVEL);
@@ -84,6 +84,7 @@ public static final String CAMERA_ZOOM_LEVEL = "camera_zoom_level";
         latEditText = (EditText) rootView.findViewById(R.id.latEditText);
         longEditText = (EditText) rootView.findViewById(R.id.longEditText);
 
+        //hide keyboard on fragment start
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         showImageButton = (Button) rootView.findViewById(R.id.showImageButton);
 
@@ -102,12 +103,12 @@ public static final String CAMERA_ZOOM_LEVEL = "camera_zoom_level";
                     double longitude = Double.parseDouble(longEditText.getText().toString());
                     listener.showSatellitePhoto(new LatLng(latitude, longitude));
                 } catch (NumberFormatException e) {
+                    //catch error when user filled not correct lat or long
                     Snackbar.make(rootLayout, getResources().getString(lat_long_input_error_message), Snackbar.LENGTH_LONG).show();
                 }
 
             }
         });
-
 
         return rootView;
     }
@@ -166,6 +167,7 @@ public static final String CAMERA_ZOOM_LEVEL = "camera_zoom_level";
 
         this.googleMap = googleMap;
 
+        //rotation handling
         if (selectedLatLng != null) {
             showPositionOnMap(selectedLatLng, googleMap);
         }

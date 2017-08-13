@@ -16,6 +16,7 @@ import com.example.alex.nasapp.R;
 import com.example.alex.nasapp.model.menuFeatures.MenuFeature;
 import com.squareup.picasso.Picasso;
 
+//fragment for loading information about app features
 public class FeatureFragment extends Fragment {
         public static final String MENU_FEATURE = "menu_feature";
 

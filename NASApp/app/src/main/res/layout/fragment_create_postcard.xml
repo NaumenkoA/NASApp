@@ -19,7 +19,7 @@
 
         <TextView
             android:id="@+id/postCardTextView"
-            android:textColor="#ffffff"
+            android:textColor="@color/colorWhite"
             android:textStyle="bold"
             android:gravity="center"
             android:textSize="30sp"
@@ -28,6 +28,28 @@
             android:layout_height="wrap_content"/>
 
    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="@string/text_color"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/colorSpinner"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Spinner>
+
+    </LinearLayout>
 
        <EditText
            android:id="@+id/postCardEditText"
